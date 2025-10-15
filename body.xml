@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ldb="http://thalesgroup.com/RTTI/2014-02-20/ldb/"
+                  xmlns:typ="http://thalesgroup.com/RTTI/2013-11-28/Token/types">
+  <soapenv:Header>
+    <typ:AccessToken>
+      <typ:TokenValue>b3acf7fa-ccc7-433a-892c-bdcdca18ccf2</typ:TokenValue>
+    </typ:AccessToken>
+  </soapenv:Header>
+  <soapenv:Body>
+    <ldb:GetDepartureBoardRequest>
+      <ldb:numRows>5</ldb:numRows>
+      <ldb:crs>HNH</ldb:crs>
+    </ldb:GetDepartureBoardRequest>
+  </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,28 @@
+Upcoming departures for HNH:
+
+Platform -
+09:20   Sutton (London)            Plat -    On time     Thameslink (TL)
+
+Platform 1
+08:42   St Albans                  Plat 1    On time     Thameslink (TL)
+08:57   St Albans                  Plat 1    On time     Thameslink (TL)
+09:12   St Albans                  Plat 1    On time     Thameslink (TL)
+
+Platform 2
+08:38   London Victoria            Plat 2    On time     Southeastern (SE)
+08:45   London Blackfriars         Plat 2    On time     Southeastern (SE)
+08:53   London Victoria            Plat 2    On time     Southeastern (SE)
+09:08   London Victoria            Plat 2    On time     Southeastern (SE)
+09:15   London Blackfriars         Plat 2    On time     Southeastern (SE)
+
+Platform 3
+08:37   Orpington                  Plat 3    On time     Southeastern (SE)
+08:52   Orpington                  Plat 3    On time     Southeastern (SE)
+09:07   Orpington                  Plat 3    On time     Southeastern (SE)
+
+Platform 4
+08:35   Sutton (London)            Plat 4    On time     Thameslink (TL)
+08:43   Beckenham Junction         Plat 4    On time     Southeastern (SE)
+08:50   Sutton (London)            Plat 4    On time     Thameslink (TL)
+09:05   Sutton (London)            Plat 4    On time     Thameslink (TL)
+
