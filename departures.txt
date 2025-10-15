@@ -1,28 +1,26 @@
 Upcoming departures for HNH:
 
-Platform -
-09:20   Sutton (London)            Plat -    On time     Thameslink (TL)
-
 Platform 1
-08:42   St Albans                  Plat 1    On time     Thameslink (TL)
-08:57   St Albans                  Plat 1    On time     Thameslink (TL)
-09:12   St Albans                  Plat 1    On time     Thameslink (TL)
+16:12   St Albans                  Plat 1    On time     Thameslink (TL)
+16:27   St Albans                  Plat 1    On time     Thameslink (TL)
+16:42   St Albans                  Plat 1    On time     Thameslink (TL)
+16:57   St Albans                  Plat -    On time     Thameslink (TL)
 
 Platform 2
-08:38   London Victoria            Plat 2    On time     Southeastern (SE)
-08:45   London Blackfriars         Plat 2    On time     Southeastern (SE)
-08:53   London Victoria            Plat 2    On time     Southeastern (SE)
-09:08   London Victoria            Plat 2    On time     Southeastern (SE)
-09:15   London Blackfriars         Plat 2    On time     Southeastern (SE)
+16:23   London Victoria            Plat 2    On time     Southeastern (SE)
+16:38   London Victoria            Plat 2    On time     Southeastern (SE)
+16:53   London Victoria            Plat 2    On time     Southeastern (SE)
+17:08   London Victoria            Plat -    On time     Southeastern (SE)
 
 Platform 3
-08:37   Orpington                  Plat 3    On time     Southeastern (SE)
-08:52   Orpington                  Plat 3    On time     Southeastern (SE)
-09:07   Orpington                  Plat 3    On time     Southeastern (SE)
+16:22   Orpington                  Plat 3    On time     Southeastern (SE)git add .
+16:37   Orpington                  Plat 3    On time     Southeastern (SE)
+16:52   Orpington                  Plat 3    On time     Southeastern (SE)
+17:07   Orpington                  Plat -    On time     Southeastern (SE)
 
 Platform 4
-08:35   Sutton (London)            Plat 4    On time     Thameslink (TL)
-08:43   Beckenham Junction         Plat 4    On time     Southeastern (SE)
-08:50   Sutton (London)            Plat 4    On time     Thameslink (TL)
-09:05   Sutton (London)            Plat 4    On time     Thameslink (TL)
+16:20   Sutton (London)            Plat 4    On time     Thameslink (TL)
+16:35   Sutton (London)            Plat -    Cancelled   Thameslink (TL)
+16:50   Sutton (London)            Plat 4    On time     Thameslink (TL)
+17:05   Sutton (London)            Plat -    On time     Thameslink (TL)
 

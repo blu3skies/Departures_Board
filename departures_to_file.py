@@ -7,7 +7,7 @@ from collections import defaultdict
 
 load_dotenv()
 
-# Current public endpoint
+# National Rail public endpoint
 NATIONAL_RAIL_URL = "https://lite.realtime.nationalrail.co.uk/OpenLDBWS/ldb9.asmx"
 TOKEN = os.getenv("NATIONAL_RAIL_TOKEN")
 
@@ -36,7 +36,7 @@ def _build_request_body(station_code: str, rows: int) -> str:
 
 
 def get_departures(station_code: str, rows: int = 10) -> List[Tuple[str, str, str, str, str, str]]:
-    """Return simplified departure data including operator info."""
+    """Return simplified departure data (times, destinations, platforms, and operator info)."""
     if not TOKEN:
         raise RuntimeError("NATIONAL_RAIL_TOKEN is not set")
 
@@ -56,16 +56,16 @@ def get_departures(station_code: str, rows: int = 10) -> List[Tuple[str, str, st
         raise RuntimeError(f"Unexpected non-XML response:\n{snippet}")
 
     data = xmltodict.parse(response.text)
-
     board = data["soap:Envelope"]["soap:Body"]["GetDepartureBoardResponse"]["GetStationBoardResult"]
+
     departures = []
     train_services = board.get("lt5:trainServices", {}).get("lt5:service", [])
     if isinstance(train_services, dict):
         train_services = [train_services]
 
     for svc in train_services:
-        std = svc.get("lt4:std")  # scheduled time
-        etd = svc.get("lt4:etd")  # estimated departure
+        std = svc.get("lt4:std")
+        etd = svc.get("lt4:etd")
         dest = svc["lt5:destination"]["lt4:location"]["lt4:locationName"]
         platform = svc.get("lt4:platform", "-")
         operator = svc.get("lt4:operator", "Unknown")
@@ -75,22 +75,45 @@ def get_departures(station_code: str, rows: int = 10) -> List[Tuple[str, str, st
     return departures
 
 
-def write_departures_to_file(departures: List[Tuple[str, str, str, str, str, str]], station_code: str):
-    """Group departures by platform and write them to a text file."""
-    output_file = "departures.txt"
+def infer_platform_from_destination(dest: str) -> str | None:
+    """Return the likely platform number based on destination text, if known."""
+    d = dest.lower()
+    if "sutton" in d:
+        return "4"
+    if "orpington" in d:
+        return "3"
+    if "victoria" in d:
+        return "2"
+    if "albans" in d:
+        return "1"
+    return None
 
-    # Group by platform using defaultdict
+
+def write_departures_to_file(departures: List[Tuple[str, str, str, str, str, str]], station_code: str):
+    """Group departures by platform and write to a text file, without modifying real platform values."""
+    output_file = "departures.txt"
     grouped = defaultdict(list)
-    for d in departures:
-        grouped[d[2]].append(d)  # d[2] = platform
+
+    # Group by actual platform if present, otherwise by inferred platform
+    for std, dest, plat, etd, operator, op_code in departures:
+        if plat and plat != "-":
+            group_plat = str(plat)
+        else:
+            inferred = infer_platform_from_destination(dest)
+            group_plat = inferred if inferred else "-"
+        grouped[group_plat].append((std, dest, plat, etd, operator, op_code))
+
+    # Sort numeric platforms first, then text (e.g. "-")
+    def sort_key(p: str):
+        return (not p.isdigit(), int(p) if p.isdigit() else p)
 
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(f"Upcoming departures for {station_code}:\n\n")
 
-        # Sort platforms numerically where possible
-        for platform in sorted(grouped.keys(), key=lambda p: (p.isdigit(), int(p) if p.isdigit() else p)):
+        for platform in sorted(grouped.keys(), key=sort_key):
             f.write(f"Platform {platform}\n")
             for std, dest, plat, etd, operator, op_code in grouped[platform]:
+                # Print the *actual* platform from the API, not the inferred one
                 f.write(f"{std or '-':<6}  {dest:<25}  Plat {plat:<3}  {etd:<10}  {operator} ({op_code})\n")
             f.write("\n")
 
