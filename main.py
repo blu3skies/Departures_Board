@@ -7,6 +7,20 @@ from weather_forecast import get_todays_weather
 
 load_dotenv()
 
+def display_weather():
+    weather = get_todays_weather()
+
+    print("\n🌤 Today's weather forecast:\n")
+    print(f"High: {weather['high_temp']}°C   Low: {weather['low_temp']}°C")
+    print(f"Sunrise: {weather['sunrise']}   Sunset: {weather['sunset']}\n")
+
+    for period, data in weather["segments"].items():
+        print(
+            f"{period.title():<8} | "
+            f"Rain: {data['rain_probability']}% {data['rain_intensity']:<15} | "
+            f"Wind: {data['wind_speed']} km/h {data['wind_dir']} (gusts {data['wind_gusts']})"
+        )
+
 def main():
     station_code = os.getenv("STATION_CODE")
     rows = int(os.getenv("ROW_COUNT", "10"))
@@ -38,13 +52,7 @@ def main():
         else:
             print(f"{line_display}  {status_display}")
     
-    # === Weather Forecast ===
-    print("\n🌤 Today's weather forecast:\n")
-    weather = get_todays_weather()
-    print(f"High: {weather['high_temp']}°C   Low: {weather['low_temp']}°C")
-
-    rain = weather["rain_probability"]
-    print(f"Chance of rain - Morning: {rain['morning']}%, Midday: {rain['midday']}%, Evening: {rain['evening']}%")
-
+    display_weather()
+    
 if __name__ == "__main__":
     main()
