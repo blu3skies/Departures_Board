@@ -15,9 +15,14 @@ def display_weather():
     print(f"Sunrise: {weather['sunrise']}   Sunset: {weather['sunset']}\n")
 
     for period, data in weather["segments"].items():
+        rain_desc = (
+            "Dry"
+            if data["rain_intensity"] == 0
+            else f"{data['rain_intensity']} mm"
+        )
         print(
             f"{period.title():<8} | "
-            f"Rain: {data['rain_probability']}% {data['rain_intensity']:<15} | "
+            f"Rain: {data['rain_probability']}% {data['sky_icon']} {rain_desc:<14} | "
             f"Wind: {data['wind_speed']} km/h {data['wind_dir']} (gusts {data['wind_gusts']})"
         )
 
