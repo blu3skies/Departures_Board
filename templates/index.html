@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="header">
+  <div>London Board</div>
+  <div class="muted">Updated: {{ updated }}</div>
+</div>
+
+<div class="grid">
+  <!-- Left column: Tube + Weather -->
+  <section class="panel">
+    <header class="panel-title">TFL Tube Status</header>
+    <div class="panel-updated">Updated: {{ updated }}</div>
+
+    {% set good = tubes | selectattr("status","equalto","Good Service") | list %}
+    {% set bad  = tubes | rejectattr("status","equalto","Good Service") | list %}
+
+    {% for t in bad %}
+      <div class="status-row bad">
+        <span class="dot red"></span>
+        <span class="line">{{ t.line }}</span>:
+        <span class="status">{{ t.status }}</span>
+        {% if t.reason %}<div class="reason">{{ t.reason }}</div>{% endif %}
+      </div>
+    {% endfor %}
+
+    {% if good|length > 0 %}
+      <div class="good">Good service on {{ good|length }} lines</div>
+    {% endif %}
+
+    <div class="spacer"></div>
+
+    <header class="panel-title">Today’s Weather</header>
+    <div class="weather-block">
+      <div>High {{ weather.high_temp }}°C, Low {{ weather.low_temp }}°C</div>
+      <div>Sunrise {{ weather.sunrise }} · Sunset {{ weather.sunset }}</div>
+    </div>
+
+    <div class="weather-grid">
+      {% for label, seg in weather.segments.items() %}
+        <div class="weather-seg">
+          <div class="seg-title">{{ label.title() }}</div>
+          <div>{{ seg.sky_icon }} · {{ seg.rain_probability }}% · {{ "%.1f"|format(seg.wind_speed) }} km/h {{ seg.wind_dir }}</div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if buses %}
+      <header class="panel-subtitle">Nearby Buses</header>
+      <table class="bus-table">
+        <thead>
+          <tr>
+            <th>Line</th>
+            <th>Destination</th>
+            <th>In</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in buses %}
+            <tr>
+              <td>{{ b.line }}</td>
+              <td>{{ b.destination }}</td>
+              <td>{{ b.expected_in_min }} min</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </section>
+
+  <!-- Right column: Train Departures -->
+  <section class="panel">
+    <header class="panel-title">Upcoming departures for {{ station }}</header>
+    <div class="panel-updated">Updated: {{ updated }}</div>
+
+    {% for platform, plist in trains.items() %}
+      <h4>Platform {{ platform }}</h4>
+      <table class="departures-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Destination</th>
+            <th>Plat</th>
+            <th>Status</th>
+            <th>Operator</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in plist %}
+            <tr>
+              <td>{{ t.std or '-' }}</td>
+              <td>{{ t.destination }}</td>
+              <td>{{ t.platform }}</td>
+              <td class="{{ 'late' if t.etd and t.etd != 'On time' }}">{{ t.etd }}</td>
+              <td>{{ t.operator }} ({{ t.operatorCode }})</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endfor %}
+  </section>
+</div>
+
+<div class="footer muted">
+  Press F11 on a desktop browser for kiosk full-screen. Page auto-refreshes every 60 s.
+</div>
+
+{% endblock %}

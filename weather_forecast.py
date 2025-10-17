@@ -99,9 +99,10 @@ def get_todays_weather(lat: float = LAT, lon: float = LON) -> Dict[str, Any]:
     low = round(min(temps), 1)
 
     segments = {
-        "morning": (6, 12),
-        "midday": (12, 18),
-        "evening": (18, 24),
+        "morning": (6, 11),
+        "midday": (11, 14),
+        "afternoon": (14, 18),
+        "evening": (18, 21),
     }
 
     def segment_avg(values, start, end):
