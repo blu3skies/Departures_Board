@@ -1,9 +1,9 @@
 :root {
-  --bg: #0f1115;
-  --fg: #d1d5db;
+  --bg: #000000;
+  --fg: #e6eef6;
   --muted: #9aa1ac;
-  --panel: #151823;
-  --border: #2a2f3a;
+  --panel: #000000;
+  --border: rgba(255,255,255,0.04);
   --green: #86efac;
   --yellow: #fde68a;
   --red: #fca5a5;
@@ -12,52 +12,96 @@
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
-.screen { max-width: 1200px; margin: 20px auto; padding: 8px; border: 1px solid var(--border); }
-
-.header, .footer { display:flex; justify-content:space-between; padding:8px 4px; color: var(--muted); }
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-.panel { border: 1px solid var(--border); background: var(--panel); padding: 10px; min-height: 520px; position:relative; }
-.panel-title { color: var(--cyan); font-weight: 600; margin-bottom: 6px; }
-.panel-subtitle { color: var(--purple); margin-top: 12px; margin-bottom: 6px; }
-.panel-updated { position:absolute; right:10px; top:10px; color: var(--muted); font-size: 12px; }
-
-.status-row { margin: 6px 0; }
-.status-row .line { color: var(--fg); font-weight: 600; }
-.status-row .status { color: var(--yellow); }
-.status-row.bad .status { color: var(--red); }
-.reason { margin-left: 18px; color: var(--muted); }
-.dot { display:inline-block; width:8px; height:8px; border-radius:999px; margin-right:6px; }
-.dot.red { background: var(--red); }
-
-.good { color: var(--green); margin-top: 8px; }
-.muted { color: var(--muted); }
-
-.table { margin-top: 8px; border: 1px solid var(--border); }
-.row { display:grid; grid-template-columns: 90px 1fr 70px 110px; border-bottom:1px solid var(--border); }
-.row.head { background: #1b2030; color: var(--muted); }
-.cell { padding: 6px 8px; }
-.status.late { color: var(--yellow); }
-.spacer { height: 10px; }
-
-.weather-block { margin-top: 8px; color: var(--fg); }
-.weather-grid { display: grid; grid-template-columns: 1fr; gap: 6px; margin-top: 8px; }
-.weather-seg { border:1px solid var(--border); padding:6px 8px; }
-.seg-title { color: var(--cyan); margin-bottom: 2px; }
-
-@media (max-width: 900px) {
-  .grid { grid-template-columns: 1fr; }
-  .row { grid-template-columns: 80px 1fr 60px 100px; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 14px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 }
 
-.platform-block { margin-top: 10px; }
-.platform-block h3 { color: var(--cyan); font-size: 14px; margin-bottom: 4px; }
+.screen {
+  max-width: 1400px;
+  margin: 6px auto;
+  padding: 8px;
+  height: calc(100vh - 12px);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  background: transparent;
+}
+
+/* header/footer */
+.header, .footer {
+  display:flex;
+  justify-content:space-between;
+  padding:8px 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* layout: left column + right trains; weather full width bottom */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* left / right halves */
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    "left right"
+    "weather right";
+  gap: 14px;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.left { grid-area: left; overflow: auto; padding-right: 8px; }
+.right { grid-area: right; overflow: auto; padding-bottom: 12px; }
+.weather { grid-area: weather; grid-column: 1 / -1; overflow: auto; }
+
+/* panels */
+.panel {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  padding: 12px;
+  min-height: 120px;
+  position: relative;
+  box-shadow: none;
+}
+
+.panel-title { color: var(--cyan); font-weight: 600; margin-bottom: 8px; }
+.panel-subtitle { color: var(--purple); margin-top: 8px; margin-bottom: 6px; }
+.panel-updated { position:absolute; right:10px; top:10px; color: var(--muted); font-size: 12px; }
+
+/* status / tubes */
+.status-list { margin: 6px 0; }
+.status-row { padding:6px 0; border-bottom: 1px solid var(--border); }
+.status-row .line { color: var(--fg); font-weight: 700; }
+.status-row .reason { color: var(--muted); margin-top: 4px; font-size: 13px; }
+
+/* tables */
+.spacer { height: 10px; }
+
+/* weather */
+.weather-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
+.weather-seg { border:1px solid var(--border); padding:8px; background: #010101; color: var(--fg); }
+.seg-title { color: var(--cyan); margin-bottom: 4px; font-weight: 600; }
+.seg-main { color: var(--fg); font-size: 14px; margin-bottom: 6px; }
+.seg-temp { color: var(--muted); font-size: 13px; }
+
+/* responsive: on small screens stack */
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; grid-template-areas: "left" "right" "weather"; grid-template-rows: auto auto auto; }
+  .weather-grid { grid-template-columns: 1fr; }
+}
+
+/* departures table - right column */
+.platform-block { margin-top: 12px; }
+.platform-block h3 { color: var(--cyan); font-size: 14px; margin-bottom: 6px; }
+
 .departures-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
-  margin-bottom: 18px;
+  margin-top: 6px;
+  margin-bottom: 12px;
   background: var(--panel);
   color: var(--fg);
   border: 1px solid var(--border);
@@ -67,36 +111,35 @@ body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 ui-mo
   padding: 6px 10px;
   border-bottom: 1px solid var(--border);
   text-align: left;
+  font-size: 13px;
 }
 .departures-table th {
-  background: #1b2030;
+  background: rgba(255,255,255,0.02);
   color: var(--muted);
   font-weight: 600;
 }
-.departures-table tr:last-child td {
-  border-bottom: none;
-}
+.departures-table tr:last-child td { border-bottom: none; }
 
+.status.late { color: var(--yellow); }
+
+/* bus table */
 .bus-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
-  margin-bottom: 18px;
+  margin-top: 8px;
+  margin-bottom: 6px;
   background: var(--panel);
   color: var(--fg);
   border: 1px solid var(--border);
 }
 .bus-table th,
-.bus-table td {
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--border);
-  text-align: left;
-}
-.bus-table th {
-  background: #1b2030;
-  color: var(--muted);
-  font-weight: 600;
-}
-.bus-table tr:last-child td {
-  border-bottom: none;
-}
+.bus-table td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align:left; font-size:13px; }
+.bus-table th { background: rgba(255,255,255,0.02); color: var(--muted); font-weight:600; }
+.bus-table tr:last-child td { border-bottom: none; }
+
+/* reduce density on left column */
+.left { font-size: 13px; }
+.left .bus-table td { font-size: 13px; padding: 6px 8px; }
+
+/* ensure contrast on black */
+.panel, .departures-table, .bus-table, .weather-seg { border-color: var(--border); background: var(--panel); }

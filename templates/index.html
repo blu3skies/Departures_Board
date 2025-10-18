@@ -1,108 +1,185 @@
-{% extends "base.html" %}
-{% block content %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ station }} Board</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+  <div class="screen">
+    <div class="header">
+      <div class="title">London Board — {{ station }}</div>
+      <div class="panel-updated">Updated: {{ updated }}</div>
+    </div>
 
-<div class="header">
-  <div>London Board</div>
-  <div class="muted">Updated: {{ updated }}</div>
-</div>
+    <div class="layout">
+      <aside class="left panel">
+        <div class="panel-title">TFL Tube Status</div>
 
-<div class="grid">
-  <!-- Left column: Tube + Weather -->
-  <section class="panel">
-    <header class="panel-title">TFL Tube Status</header>
-    <div class="panel-updated">Updated: {{ updated }}</div>
+        {% macro tube_name(t) -%}
+          {%- if t is mapping -%}
+            {{ t.get('name') or t.get('lineName') or t.get('line') or t.get('id') or 'Unknown' }}
+          {%- else -%}
+            {{ t }}
+          {%- endif -%}
+        {%- endmacro %}
 
-    {% set good = tubes | selectattr("status","equalto","Good Service") | list %}
-    {% set bad  = tubes | rejectattr("status","equalto","Good Service") | list %}
+        {% macro tube_status_text(t) -%}
+          {%- if t is mapping -%}
+            {{ t.get('status') or t.get('lineStatus') or t.get('description') or '' }}
+          {%- else -%}
+            {{ '' }}
+          {%- endif -%}
+        {%- endmacro %}
 
-    {% for t in bad %}
-      <div class="status-row bad">
-        <span class="dot red"></span>
-        <span class="line">{{ t.line }}</span>:
-        <span class="status">{{ t.status }}</span>
-        {% if t.reason %}<div class="reason">{{ t.reason }}</div>{% endif %}
+        {% if tubes %}
+          <div class="status-list">
+            {% for t in tubes %}
+              <div class="status-row{% if 'Minor' in (tube_status_text(t) or '') or ('Good' not in (tube_status_text(t) or '')) %} bad{% endif %}">
+                <div class="line">{{ tube_name(t) }}</div>
+                <div class="reason">{{ tube_status_text(t) }}</div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="muted">Tube status unavailable</div>
+        {% endif %}
+
+        <div class="spacer"></div>
+
+        <div class="panel-subtitle">Nearby Buses</div>
+
+        {% macro bus_dest(b) -%}
+          {%- if b is mapping -%}
+            {{ b.get('destination') or b.get('towards') or b.get('toward') or b.get('stop_name') or 'Unknown' }}
+          {%- else -%}
+            {{ b }}
+          {%- endif -%}
+        {%- endmacro %}
+
+        {% macro bus_time_display(b) -%}
+          {% if b is mapping %}
+            {% set tts = (b.get('time_to_station') or b.get('timeToStation') or b.get('timeToStationSecs') or b.get('time_to_station_secs')) %}
+            {% if tts is not none %}
+              {% set mins = (tts|int // 60) %}
+              {{ 'Due' if mins == 0 else (mins ~ ' min') }}
+            {% else %}
+              {{ b.get('expectedArrival') or b.get('displayTime') or b.get('time') or b.get('eta') or '—' }}
+            {% endif %}
+          {% else %}
+            {{ b }}
+          {% endif %}
+        {%- endmacro %}
+
+        {% if buses %}
+          <table class="bus-table">
+            <thead><tr><th>Line</th><th>Destination</th><th>In</th></tr></thead>
+            <tbody>
+              {% for b in buses %}
+                <tr>
+                  <td>
+                    {% if b is mapping %}
+                      {{ b.get('line') or b.get('route') or b.get('service') or '—' }}
+                    {% else %}
+                      {{ b }}
+                    {% endif %}
+                  </td>
+                  <td>{{ bus_dest(b) }}</td>
+                  <td>{{ bus_time_display(b) }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <div class="muted">No bus info</div>
+        {% endif %}
+
+        <div class="spacer"></div>
+
+        <div class="panel-subtitle">Other info</div>
+        <div class="muted">Press F11 on a desktop browser for kiosk full-screen. Page auto-refreshes every 60 s.</div>
+      </aside>
+
+      <main class="right panel">
+        <div class="panel-title">Upcoming departures for {{ station }}</div>
+
+        {% if trains %}
+          {% for platform, rows in trains.items() %}
+            <div class="platform-block">
+              <h3>Platform {{ platform }}</h3>
+              <table class="departures-table">
+                <thead>
+                  <tr><th>Time</th><th>Destination</th><th>Plat</th><th>Status</th><th>Operator</th></tr>
+                </thead>
+                <tbody>
+                  {% for t in rows %}
+                    <tr>
+                      {% if t is mapping %}
+                        <td>{{ t.get('std') or t.get('time') or '' }}</td>
+                        <td>{{ t.get('destination') or t.get('dest') or 'Unknown' }}</td>
+                        <td>{{ t.get('platform') or '-' }}</td>
+                        <td class="status {% if (t.get('etd','')|lower) not in ['on time','due',''] %}late{% endif %}">
+                          {{ t.get('etd') or 'On time' }}
+                        </td>
+                        <td>{{ t.get('operator') or t.get('operatorName') or '' }}{% if t.get('operatorCode') %} ({{ t.get('operatorCode') }}){% endif %}</td>
+                      {% else %}
+                        <td colspan="5">{{ t }}</td>
+                      {% endif %}
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="muted">No train departures available</div>
+        {% endif %}
+      </main>
+
+      <div class="weather panel">
+        <div class="panel-title">Today's Weather</div>
+
+        {% set segments = [] %}
+        {% if weather %}
+          {% if weather is mapping and weather.get('segments') is defined %}
+            {% set segments = weather.get('segments') %}
+          {% elif weather is mapping and weather.get('periods') is defined %}
+            {% set segments = weather.get('periods') %}
+          {% elif weather is mapping and weather.get('data') is defined and weather.get('data').get('segments') is defined %}
+            {% set segments = weather.get('data').get('segments') %}
+          {% elif weather is sequence %}
+            {% set segments = weather %}
+          {% endif %}
+        {% endif %}
+
+        {% if segments %}
+          <div class="weather-grid">
+            {% for seg in segments %}
+              <div class="weather-seg">
+                {% if seg is mapping %}
+                  <div class="seg-title">{{ seg.get('title') or seg.get('name') or seg.get('period') or 'Weather' }}</div>
+                  <div class="seg-main">{{ seg.get('summary') or seg.get('shortForecast') or seg.get('description') or '' }}</div>
+                  {% if seg.get('temp') or seg.get('temperature') %}
+                    <div class="seg-temp">{{ seg.get('temp') or seg.get('temperature') }}°</div>
+                  {% endif %}
+                {% else %}
+                  <div class="seg-title">{{ seg }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="muted">Weather unavailable</div>
+        {% endif %}
       </div>
-    {% endfor %}
-
-    {% if good|length > 0 %}
-      <div class="good">Good service on {{ good|length }} lines</div>
-    {% endif %}
-
-    <div class="spacer"></div>
-
-    <header class="panel-title">Today’s Weather</header>
-    <div class="weather-block">
-      <div>High {{ weather.high_temp }}°C, Low {{ weather.low_temp }}°C</div>
-      <div>Sunrise {{ weather.sunrise }} · Sunset {{ weather.sunset }}</div>
     </div>
 
-    <div class="weather-grid">
-      {% for label, seg in weather.segments.items() %}
-        <div class="weather-seg">
-          <div class="seg-title">{{ label.title() }}</div>
-          <div>{{ seg.sky_icon }} · {{ seg.rain_probability }}% · {{ "%.1f"|format(seg.wind_speed) }} km/h {{ seg.wind_dir }}</div>
-        </div>
-      {% endfor %}
+    <div class="footer">
+      <div class="muted">Data sources: National Rail / TFL / Weather</div>
+      <div class="muted">Board auto-refreshes</div>
     </div>
-
-    {% if buses %}
-      <header class="panel-subtitle">Nearby Buses</header>
-      <table class="bus-table">
-        <thead>
-          <tr>
-            <th>Line</th>
-            <th>Destination</th>
-            <th>In</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for b in buses %}
-            <tr>
-              <td>{{ b.line }}</td>
-              <td>{{ b.destination }}</td>
-              <td>{{ b.expected_in_min }} min</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% endif %}
-  </section>
-
-  <!-- Right column: Train Departures -->
-  <section class="panel">
-    <header class="panel-title">Upcoming departures for {{ station }}</header>
-    <div class="panel-updated">Updated: {{ updated }}</div>
-
-    {% for platform, plist in trains.items() %}
-      <h4>Platform {{ platform }}</h4>
-      <table class="departures-table">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Destination</th>
-            <th>Plat</th>
-            <th>Status</th>
-            <th>Operator</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for t in plist %}
-            <tr>
-              <td>{{ t.std or '-' }}</td>
-              <td>{{ t.destination }}</td>
-              <td>{{ t.platform }}</td>
-              <td class="{{ 'late' if t.etd and t.etd != 'On time' }}">{{ t.etd }}</td>
-              <td>{{ t.operator }} ({{ t.operatorCode }})</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% endfor %}
-  </section>
-</div>
-
-<div class="footer muted">
-  Press F11 on a desktop browser for kiosk full-screen. Page auto-refreshes every 60 s.
-</div>
-
-{% endblock %}
+  </div>
+</body>
+</html>

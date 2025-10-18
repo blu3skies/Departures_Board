@@ -129,7 +129,6 @@ def get_train_departures(station_code: str, rows: int = 10):
     Returns departures grouped by platform for display.
     """
     raw = get_departures(station_code, rows)
-    print("DEBUG raw departures:", raw)
 
     likely_platform = {
         "Sutton": "4",
