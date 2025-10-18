@@ -144,3 +144,12 @@ def get_todays_weather(lat: float = LAT, lon: float = LON) -> Dict[str, Any]:
         "sunrise": sunrise,
         "sunset": sunset,
     }
+
+if __name__ == "__main__":
+    import json
+    print(f"Fetching weather for {LAT}, {LON}...")
+    data = get_todays_weather()
+    with open("weather_output.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    print(json.dumps(data, indent=2))
+    print("\nSaved output to weather_output.json")

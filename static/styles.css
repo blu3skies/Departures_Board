@@ -79,14 +79,9 @@ body {
   gap: 8px;
 }
 .tube-card {
-  --tube-color: #3f3f46;
   display: flex;
-  align-items: stretch;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.04);
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.3) inset;
-  border-radius: 6px;
-  overflow: hidden;
+  align-items: flex-start;
+  height: 70px;
 }
 .tube-card-accent {
   width: 12px;
@@ -97,8 +92,9 @@ body {
   padding: 10px 12px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 4px;
+  min-height: 60px;
 }
 .tube-line {
   font-weight: 700;
@@ -221,3 +217,74 @@ body {
 
 /* ensure contrast on black */
 .panel, .departures-table, .bus-table, .weather-seg { border-color: var(--border); background: var(--panel); }
+
+
+.tube-status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.tube-row {
+  display: flex;
+  align-items: center;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-left: 6px solid var(--tube-color, #3f3f46);
+  border-radius: 4px;
+  padding: 6px 10px;
+  gap: 12px;
+  min-height: 38px;
+}
+
+.tube-colour {
+  width: 0; /* handled by border-left */
+}
+
+.tube-name {
+  font-weight: 600;
+  color: #fff;
+  min-width: 120px;
+}
+
+.tube-status-text {
+  color: #f5e691;
+  flex-grow: 1;
+  white-space: nowrap;
+}
+
+.tube-reason-container {
+  position: relative;
+}
+
+.reason-toggle {
+  background: none;
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: #ccc;
+  font-size: 0.85em;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+.reason-toggle:hover { background: #333; }
+
+.tube-reason-popup {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #ccc;
+  padding: 8px;
+  font-size: 0.85em;
+  width: 350px;
+  z-index: 100;
+  display: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+.tube-reason-popup.active {
+  display: block;
+}

@@ -19,39 +19,25 @@
         <div class="panel-title">TFL Tube Status</div>
 
         {% if tube_has_data and (tubes or tube_good_summary) %}
-          <div class="status-list">
+          <div class="tube-status-list">
             {% for t in tubes %}
-              <div class="tube-card {{ t.severity }}" style="--tube-color: {{ t.color | default('#3f3f46') }}">
-                <div class="tube-card-accent"></div>
-                <div class="tube-card-body">
-                  <div class="tube-card-top">
-                    <div class="tube-line">{{ t.name }}</div>
-                    <div class="tube-status">{{ t.status }}</div>
-                  </div>
-                  {% if t.reason %}
-                    <div class="tube-reason">{{ t.reason }}</div>
-                  {% endif %}
+              <div class="tube-row {{ t.severity }}" style="--tube-color: {{ t.color | default('#3f3f46') }}">
+                <div class="tube-name">{{ t.name }}</div>
+                <div class="tube-status-text">{{ t.status }}</div>
+
+                {% if t.reason %}
+                <div class="tube-reason-container">
+                  <button type="button" class="reason-toggle">Show details</button>
+                  <div class="tube-reason-popup">{{ t.reason }}</div>
                 </div>
+                {% endif %}
               </div>
             {% endfor %}
 
             {% if tube_good_summary %}
-              <div class="tube-card tube-summary">
-                {% if tube_good_colours %}
-                  <div class="tube-summary-swatches">
-                    {% for colour in tube_good_colours %}
-                      <span style="background: {{ colour }}"></span>
-                    {% endfor %}
-                  </div>
-                {% else %}
-                  <div class="tube-summary-swatches single"></div>
-                {% endif %}
-                <div class="tube-card-body">
-                  <div class="tube-card-top">
-                    <div class="tube-line">Good service</div>
-                    <div class="tube-status">{{ tube_good_summary }}</div>
-                  </div>
-                </div>
+              <div class="tube-row tube-summary">
+                <div class="tube-name">Good service</div>
+                <div class="tube-status-text">{{ tube_good_summary }}</div>
               </div>
             {% endif %}
           </div>

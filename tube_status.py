@@ -47,3 +47,13 @@ def get_tube_status(modes: List[str] | None = None) -> List[Dict]:
         })
 
     return statuses
+
+if __name__ == "__main__":
+    import json
+    modes = ["tube"]
+    print(f"Fetching tube status for {', '.join(modes)}...")
+    data = get_tube_status(modes)
+    with open("tube_status_output.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    print(json.dumps(data, indent=2))
+    print("\nSaved output to tube_status_output.json")

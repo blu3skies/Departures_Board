@@ -1,0 +1,58 @@
+[
+  {
+    "line": "415",
+    "destination": "Old Kent Road, Tesco",
+    "expected_in_min": 2,
+    "vehicle_id": "LTZ1616",
+    "towards": "Kennington Or Stockwell",
+    "station_name": "Jubilee Primary School"
+  },
+  {
+    "line": "432",
+    "destination": "Brixton",
+    "expected_in_min": 2,
+    "vehicle_id": "LK17AKJ",
+    "towards": "Kennington Or Stockwell",
+    "station_name": "Jubilee Primary School"
+  },
+  {
+    "line": "2",
+    "destination": "Marylebone",
+    "expected_in_min": 7,
+    "vehicle_id": "LK17AHJ",
+    "towards": "Kennington Or Stockwell",
+    "station_name": "Jubilee Primary School"
+  },
+  {
+    "line": "432",
+    "destination": "Brixton",
+    "expected_in_min": 17,
+    "vehicle_id": "LT63UJR",
+    "towards": "Kennington Or Stockwell",
+    "station_name": "Jubilee Primary School"
+  },
+  {
+    "line": "415",
+    "destination": "Old Kent Road, Tesco",
+    "expected_in_min": 19,
+    "vehicle_id": "LTZ1686",
+    "towards": "Kennington Or Stockwell",
+    "station_name": "Jubilee Primary School"
+  },
+  {
+    "line": "2",
+    "destination": "Marylebone",
+    "expected_in_min": 20,
+    "vehicle_id": "LK17AFZ",
+    "towards": "Kennington Or Stockwell",
+    "station_name": "Jubilee Primary School"
+  },
+  {
+    "line": "432",
+    "destination": "Brixton",
+    "expected_in_min": 27,
+    "vehicle_id": "LT63UJP",
+    "towards": "Kennington Or Stockwell",
+    "station_name": "Jubilee Primary School"
+  }
+]

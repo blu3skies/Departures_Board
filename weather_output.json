@@ -1,0 +1,40 @@
+{
+  "high_temp": 15.2,
+  "low_temp": 11.0,
+  "segments": {
+    "morning": {
+      "rain_probability": 0,
+      "rain_intensity": 0,
+      "sky_icon": "☁️",
+      "wind_speed": 7.3,
+      "wind_gusts": 16.4,
+      "wind_dir": "E"
+    },
+    "midday": {
+      "rain_probability": 0,
+      "rain_intensity": 0,
+      "sky_icon": "☁️",
+      "wind_speed": 10.6,
+      "wind_gusts": 22.6,
+      "wind_dir": "SE"
+    },
+    "afternoon": {
+      "rain_probability": 0,
+      "rain_intensity": 0,
+      "sky_icon": "☁️",
+      "wind_speed": 11.8,
+      "wind_gusts": 28.4,
+      "wind_dir": "SE"
+    },
+    "evening": {
+      "rain_probability": 0,
+      "rain_intensity": 0,
+      "sky_icon": "☁️",
+      "wind_speed": 10.1,
+      "wind_gusts": 23.2,
+      "wind_dir": "SE"
+    }
+  },
+  "sunrise": "07:30",
+  "sunset": "18:01"
+}

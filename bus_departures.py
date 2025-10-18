@@ -44,3 +44,13 @@ def get_bus_departures(stop_code: str | None = None, limit: int = 10) -> List[Di
         })
 
     return departures
+
+if __name__ == "__main__":
+    import json
+    stop_code = os.getenv("BUS_STOP_ID")
+    print(f"Fetching bus departures for stop {stop_code}...")
+    data = get_bus_departures(stop_code, limit=8)
+    with open("bus_departures_output.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    print(json.dumps(data, indent=2))
+    print("\nSaved output to bus_departures_output.json")

@@ -158,3 +158,20 @@ def get_train_departures(station_code: str, rows: int = 10):
 
     sorted_grouped = dict(sorted(grouped.items(), key=_sort_key))
     return sorted_grouped
+
+if __name__ == "__main__":
+    import json
+
+    station = os.getenv("STATION_CODE", "HNH")
+    rows = int(os.getenv("ROW_COUNT", "10"))
+
+    print(f"Fetching train departures for {station}...")
+    data = get_train_departures(station, rows)
+
+    # Save full JSON for inspection
+    with open("train_departures_output.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+    # Print summary to console
+    print(json.dumps(data, indent=2))
+    print("\nSaved output to train_departures_output.json")
