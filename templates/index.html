@@ -15,7 +15,8 @@
     </div>
 
     <div class="layout">
-      <aside class="left panel">
+      <!-- Tube Status -->
+      <aside class="panel tube-panel">
         <div class="panel-title">TFL Tube Status</div>
 
         {% if tube_has_data and (tubes or tube_good_summary) %}
@@ -46,63 +47,10 @@
         {% else %}
           <div class="muted">Tube status unavailable</div>
         {% endif %}
-
-        <div class="spacer"></div>
-
-        <div class="panel-subtitle">Nearby Buses</div>
-
-        {% macro bus_dest(b) -%}
-          {%- if b is mapping -%}
-            {{ b.get('destination') or b.get('towards') or b.get('toward') or b.get('stop_name') or 'Unknown' }}
-          {%- else -%}
-            {{ b }}
-          {%- endif -%}
-        {%- endmacro %}
-
-        {% macro bus_time_display(b) -%}
-          {% if b is mapping %}
-            {% set tts = (b.get('time_to_station') or b.get('timeToStation') or b.get('timeToStationSecs') or b.get('time_to_station_secs')) %}
-            {% if tts is not none %}
-              {% set mins = (tts|int // 60) %}
-              {{ 'Due' if mins == 0 else (mins ~ ' min') }}
-            {% else %}
-              {{ b.get('expectedArrival') or b.get('displayTime') or b.get('time') or b.get('eta') or '—' }}
-            {% endif %}
-          {% else %}
-            {{ b }}
-          {% endif %}
-        {%- endmacro %}
-
-        {% if buses %}
-          <table class="bus-table">
-            <thead><tr><th>Line</th><th>Destination</th><th>In</th></tr></thead>
-            <tbody>
-              {% for b in buses %}
-                <tr>
-                  <td>
-                    {% if b is mapping %}
-                      {{ b.get('line') or b.get('route') or b.get('service') or '—' }}
-                    {% else %}
-                      {{ b }}
-                    {% endif %}
-                  </td>
-                  <td>{{ bus_dest(b) }}</td>
-                  <td>{{ bus_time_display(b) }}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        {% else %}
-          <div class="muted">No bus info</div>
-        {% endif %}
-
-        <div class="spacer"></div>
-
-        <div class="panel-subtitle">Other info</div>
-        <div class="muted">Press F11 on a desktop browser for kiosk full-screen. Page auto-refreshes every 60 s.</div>
       </aside>
 
-      <main class="right panel">
+      <!-- Train Departures -->
+      <main class="panel train-panel">
         <div class="panel-title">Upcoming departures for {{ station }}</div>
 
         {% if trains %}
@@ -138,19 +86,46 @@
         {% endif %}
       </main>
 
-      <div class="weather panel">
+      <!-- Bus Arrivals -->
+      <section class="panel bus-panel">
+        <div class="panel-title">Nearby Buses</div>
+
+        {% if buses %}
+          <table class="bus-table">
+            <thead><tr><th>Line</th><th>Destination</th><th>In</th></tr></thead>
+            <tbody>
+              {% for b in buses %}
+                <tr>
+                  <td>{{ b.get('line') or b.get('route') or b.get('service') or '—' }}</td>
+                  <td>{{ b.get('destination') or b.get('towards') or 'Unknown' }}</td>
+                  <td>{{ b.get('expected_in_min') or '—' }} min</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <div class="muted">No bus info</div>
+        {% endif %}
+      </section>
+
+      <!-- Weather -->
+      <section class="panel weather-panel">
         <div class="panel-title">Today's Weather</div>
 
-        {% set segments = [] %}
         {% if weather %}
-          {% if weather is mapping and weather.get('segments') is defined %}
-            {% set segments = weather.get('segments') %}
-          {% elif weather is mapping and weather.get('periods') is defined %}
-            {% set segments = weather.get('periods') %}
-          {% elif weather is mapping and weather.get('data') is defined and weather.get('data').get('segments') is defined %}
-            {% set segments = weather.get('data').get('segments') %}
-          {% elif weather is sequence %}
-            {% set segments = weather %}
+          {% set segments = [] %}
+          {% if weather.get('segments') %}
+            {% for key, seg in weather.get('segments').items() %}
+              {% set _ = segments.append({
+                'title': key|capitalize,
+                'rain_probability': seg.get('rain_probability'),
+                'rain_intensity': seg.get('rain_intensity'),
+                'sky_icon': seg.get('sky_icon'),
+                'wind_speed': seg.get('wind_speed'),
+                'wind_gusts': seg.get('wind_gusts'),
+                'wind_dir': seg.get('wind_dir')
+              }) %}
+            {% endfor %}
           {% endif %}
         {% endif %}
 
@@ -158,27 +133,27 @@
           <div class="weather-grid">
             {% for seg in segments %}
               <div class="weather-seg">
-                {% if seg is mapping %}
-                  <div class="seg-title">{{ seg.get('title') or seg.get('name') or seg.get('period') or 'Weather' }}</div>
-                  <div class="seg-main">{{ seg.get('summary') or seg.get('shortForecast') or seg.get('description') or '' }}</div>
-                  {% if seg.get('temp') or seg.get('temperature') %}
-                    <div class="seg-temp">{{ seg.get('temp') or seg.get('temperature') }}°</div>
-                  {% endif %}
-                {% else %}
-                  <div class="seg-title">{{ seg }}</div>
-                {% endif %}
+                <div class="seg-title">{{ seg.title }}</div>
+                <div class="seg-main">
+                  {{ seg.sky_icon }} | {{ seg.rain_probability }}% rain |
+                  {{ seg.wind_speed }} km/h {{ seg.wind_dir }}
+                </div>
               </div>
             {% endfor %}
+          </div>
+          <div class="muted">
+            High: {{ weather.high_temp }}° • Low: {{ weather.low_temp }}° •
+            Sunrise: {{ weather.sunrise }} • Sunset: {{ weather.sunset }}
           </div>
         {% else %}
           <div class="muted">Weather unavailable</div>
         {% endif %}
-      </div>
+      </section>
     </div>
 
     <div class="footer">
       <div class="muted">Data sources: National Rail / TFL / Weather</div>
-      <div class="muted">Board auto-refreshes</div>
+      <div class="muted">Board auto-refreshes every 60 s</div>
     </div>
   </div>
 </body>

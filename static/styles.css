@@ -1,229 +1,77 @@
 :root {
-  --bg: #000000;
+  --bg: #000;
   --fg: #e6eef6;
   --muted: #9aa1ac;
-  --panel: #000000;
-  --border: rgba(255,255,255,0.04);
-  --green: #86efac;
-  --yellow: #fde68a;
-  --red: #fca5a5;
+  --panel: #000;
+  --border: rgba(255,255,255,0.05);
   --cyan: #67e8f9;
-  --purple: #c084fc;
+  --yellow: #fde68a;
+  --red: #f87171;
 }
 
 * { box-sizing: border-box; }
-html, body { height: 100%; }
 body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font: 14px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font: 14px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 }
 
 .screen {
   max-width: 1400px;
-  margin: 6px auto;
+  margin: 8px auto;
   padding: 8px;
-  height: calc(100vh - 12px);
+  height: calc(100vh - 16px);
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border);
-  background: transparent;
 }
 
-/* header/footer */
 .header, .footer {
-  display:flex;
-  justify-content:space-between;
-  padding:8px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
   color: var(--muted);
   font-size: 13px;
 }
 
-/* layout: left column + right trains; weather full width bottom */
+/* === GRID LAYOUT === */
 .layout {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* left / right halves */
-  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr 1.5fr;
+  grid-template-rows: auto 1fr auto auto;
   grid-template-areas:
-    "left right"
-    "weather right";
-  gap: 14px;
-  flex: 1 1 auto;
-  min-height: 0;
+    "tube train"
+    "bus train"
+    "weather weather";
+  gap: 12px;
+  flex-grow: 1;
 }
 
-.left { grid-area: left; overflow: auto; padding-right: 8px; }
-.right { grid-area: right; overflow: auto; padding-bottom: 12px; }
-.weather { grid-area: weather; grid-column: 1 / -1; overflow: auto; }
-
-/* panels */
 .panel {
   border: 1px solid var(--border);
   background: var(--panel);
-  padding: 12px;
-  min-height: 120px;
-  position: relative;
-  box-shadow: none;
-}
-
-.panel-title { color: var(--cyan); font-weight: 600; margin-bottom: 8px; }
-.panel-subtitle { color: var(--purple); margin-top: 8px; margin-bottom: 6px; }
-.panel-updated { position:absolute; right:10px; top:10px; color: var(--muted); font-size: 12px; }
-
-/* status / tubes */
-.status-list {
-  margin: 6px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.tube-card {
-  display: flex;
-  align-items: flex-start;
-  height: 70px;
-}
-.tube-card-accent {
-  width: 12px;
-  background: var(--tube-color);
-}
-.tube-card-body {
-  flex: 1;
   padding: 10px 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 4px;
-  min-height: 60px;
-}
-.tube-line {
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.2px;
-}
-.tube-status {
-  font-size: 13px;
-  color: var(--muted);
-}
-.tube-card-top {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 6px 12px;
-}
-.tube-card-top .tube-status {
-  margin-left: auto;
-  text-align: right;
-}
-.tube-reason {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.4;
-}
-.tube-card.major .tube-status { color: var(--red); }
-.tube-card.warn .tube-status { color: var(--yellow); }
-.tube-card.major .tube-reason { color: var(--red); }
-.tube-card.warn .tube-reason { color: var(--yellow); }
-.tube-summary {
-  padding: 0;
-  background: rgba(103,232,249,0.04);
-}
-.tube-summary .tube-card-body {
-  padding: 10px 12px;
-}
-.tube-summary-swatches {
-  display: flex;
-  flex-direction: column;
-  width: 18px;
-  min-height: 100%;
-  gap: 2px;
-  padding: 6px 0;
-  border-right: 1px solid var(--border);
-}
-.tube-summary-swatches span,
-.tube-summary-swatches.single {
-  flex: 1;
-  min-height: 6px;
-  display: block;
-}
-.tube-summary-swatches.single {
-  background: #3f3f46;
+  overflow: auto;
 }
 
-/* tables */
-.spacer { height: 10px; }
+.tube-panel { grid-area: tube; }
+.train-panel { grid-area: train; }
+.bus-panel { grid-area: bus; }
+.weather-panel { grid-area: weather; }
 
-/* weather */
-.weather-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
-.weather-seg { border:1px solid var(--border); padding:8px; background: #010101; color: var(--fg); }
-.seg-title { color: var(--cyan); margin-bottom: 4px; font-weight: 600; }
-.seg-main { color: var(--fg); font-size: 14px; margin-bottom: 6px; }
-.seg-temp { color: var(--muted); font-size: 13px; }
-
-/* responsive: on small screens stack */
-@media (max-width: 900px) {
-  .layout { grid-template-columns: 1fr; grid-template-areas: "left" "right" "weather"; grid-template-rows: auto auto auto; }
-  .weather-grid { grid-template-columns: 1fr; }
-}
-
-/* departures table - right column */
-.platform-block { margin-top: 12px; }
-.platform-block h3 { color: var(--cyan); font-size: 14px; margin-bottom: 6px; }
-
-.departures-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 6px;
-  margin-bottom: 12px;
-  background: var(--panel);
-  color: var(--fg);
-  border: 1px solid var(--border);
-}
-.departures-table th,
-.departures-table td {
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--border);
-  text-align: left;
-  font-size: 13px;
-}
-.departures-table th {
-  background: rgba(255,255,255,0.02);
-  color: var(--muted);
+.panel-title {
+  color: var(--cyan);
   font-weight: 600;
+  margin-bottom: 8px;
 }
-.departures-table tr:last-child td { border-bottom: none; }
 
-.status.late { color: var(--yellow); }
-
-/* bus table */
-.bus-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 8px;
-  margin-bottom: 6px;
-  background: var(--panel);
-  color: var(--fg);
-  border: 1px solid var(--border);
-}
-.bus-table th,
-.bus-table td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align:left; font-size:13px; }
-.bus-table th { background: rgba(255,255,255,0.02); color: var(--muted); font-weight:600; }
-.bus-table tr:last-child td { border-bottom: none; }
-
-/* reduce density on left column */
-.left { font-size: 13px; }
-.left .bus-table td { font-size: 13px; padding: 6px 8px; }
-
-/* ensure contrast on black */
-.panel, .departures-table, .bus-table, .weather-seg { border-color: var(--border); background: var(--panel); }
-
-
+/* === TUBE STATUS ROWS === */
 .tube-status-list {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  width: 100%;
 }
 
 .tube-row {
@@ -233,42 +81,23 @@ body {
   border: 1px solid #2a2a2a;
   border-left: 6px solid var(--tube-color, #3f3f46);
   border-radius: 4px;
-  padding: 6px 10px;
+  padding: 5px 10px;
   gap: 12px;
-  min-height: 38px;
 }
 
-.tube-colour {
-  width: 0; /* handled by border-left */
-}
-
-.tube-name {
-  font-weight: 600;
-  color: #fff;
-  min-width: 120px;
-}
-
-.tube-status-text {
-  color: #f5e691;
-  flex-grow: 1;
-  white-space: nowrap;
-}
-
-.tube-reason-container {
-  position: relative;
-}
-
+.tube-name { font-weight: 600; color: #fff; min-width: 120px; font-size: 13px; }
+.tube-status-text { color: #f5e691; flex-grow: 1; font-size: 13px; }
+.tube-reason-container { position: relative; }
 .reason-toggle {
   background: none;
   border: 1px solid #555;
   border-radius: 4px;
   color: #ccc;
-  font-size: 0.85em;
-  padding: 3px 8px;
+  font-size: 0.8em;
+  padding: 2px 6px;
   cursor: pointer;
 }
 .reason-toggle:hover { background: #333; }
-
 .tube-reason-popup {
   position: absolute;
   right: 0;
@@ -280,11 +109,92 @@ body {
   padding: 8px;
   font-size: 0.85em;
   width: 350px;
-  z-index: 100;
+  z-index: 10;
   display: none;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+.tube-reason-popup.active { display: block; }
+
+/* === TRAIN TABLE === */
+.platform-block h3 {
+  color: var(--cyan);
+  margin: 6px 0 2px 0;
+  font-size: 1em;
 }
 
-.tube-reason-popup.active {
-  display: block;
+.departures-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #000;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.departures-table th,
+.departures-table td {
+  padding: 3px 6px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.departures-table th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.status.late {
+  color: var(--yellow);
+}
+
+.platform-block {
+  margin-bottom: 8px;
+}
+
+/* === BUS TABLE === */
+.bus-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  line-height: 1.3;
+}
+.bus-table th, .bus-table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.bus-table th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* === WEATHER === */
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.weather-seg {
+  border: 1px solid var(--border);
+  background: #010101;
+  padding: 8px;
+}
+.seg-title { color: var(--cyan); margin-bottom: 4px; font-weight: 600; }
+.seg-temp { color: var(--muted); }
+
+/* === UTILITY === */
+.muted { color: var(--muted); }
+.spacer { margin: 10px 0; }
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "tube"
+      "train"
+      "bus"
+      "weather";
+  }
 }
