@@ -120,7 +120,6 @@ def get_departures(station_code: str, rows: int = 10):
             print("DEBUG: Failed to extract service details:", repr(e))
             continue
 
-    print("DEBUG extracted departures:", results)
     return results
 
 
@@ -158,5 +157,4 @@ def get_train_departures(station_code: str, rows: int = 10):
             return (1, k or "")
 
     sorted_grouped = dict(sorted(grouped.items(), key=_sort_key))
-    print("DEBUG grouped departures:", sorted_grouped)
     return sorted_grouped
