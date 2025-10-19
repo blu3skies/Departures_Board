@@ -26,6 +26,7 @@ LINE_COLOURS = {
     "tram": "#66c61a",
     "victoria": "#00a0e2",
     "waterlooandcity": "#76d0a3",
+    "waterloocity": "#76d0a3",  
 }
 
 
