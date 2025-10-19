@@ -37,6 +37,11 @@
 
             {% if tube_good_summary %}
               <div class="tube-row tube-summary">
+                <div class="tube-summary-swatches">
+                  {% for colour in tube_good_colours %}
+                    <span style="background: {{ colour }}"></span>
+                  {% endfor %}
+                </div>
                 <div class="tube-name">Good service</div>
                 <div class="tube-status-text">{{ tube_good_summary }}</div>
               </div>
