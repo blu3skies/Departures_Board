@@ -2,8 +2,8 @@
   {
     "mode": "tube",
     "line": "Bakerloo",
-    "status": "Minor Delays",
-    "reason": "Bakerloo Line: Minor delays due to train cancellations.    "
+    "status": "Good Service",
+    "reason": ""
   },
   {
     "mode": "tube",
@@ -20,8 +20,8 @@
   {
     "mode": "tube",
     "line": "District",
-    "status": "Part Suspended",
-    "reason": "District Line: No service between Turnham Green and Ealing Broadway while we fix a signal failure at Acton Town. GOOD SERVICE on the rest of the line. Tickets are being accepted on London Buses and Elizabeth line services via reasonable routes.  "
+    "status": "Good Service",
+    "reason": ""
   },
   {
     "mode": "tube",
@@ -38,20 +38,20 @@
   {
     "mode": "tube",
     "line": "Metropolitan",
-    "status": "Part Closure",
-    "reason": "METROPOLITAN LINE: Saturday 18 and Sunday 19 October, no service between Harrow-on-the-Hill and Uxbridge. There will also be no PICCADILLY LINE service between Acton Town and Uxbridge. Replacement bus service ML1 operates between Harrow-on-the-Hill and Uxbridge via West Harrow (Treve Avenue), South Harrow, Rayners Lane, Eastcote, Ruislip Manor, Ruislip, West Ruislip (for Central line and Chiltern Railways), Ickenham and Hillingdon."
+    "status": "Good Service",
+    "reason": ""
   },
   {
     "mode": "tube",
     "line": "Northern",
-    "status": "Minor Delays",
-    "reason": "Northern Line:  Minor delays due to train cancellations. "
+    "status": "Severe Delays",
+    "reason": "Northern Line: Severe delays while we fix a signal failure at Stockwell. London Buses, Southeastern, Thameslink and South Western Railway are accepting valid tickets via any reasonable route. Please avoid the Northern line where possible. You will find it quicker to use alternative routes if you can. "
   },
   {
     "mode": "tube",
     "line": "Piccadilly",
-    "status": "Part Closure",
-    "reason": "PICCADILLY LINE: Saturday 18 and Sunday 19 October, no service between Acton Town and Uxbridge. There will also be no METROPOLITAN LINE service between Harrow-on-the-Hill and Uxbridge. Replacement bus service ML1 operates between Harrow-on-the-Hill and Uxbridge via West Harrow (Treve Avenue), South Harrow, Rayners Lane, Eastcote, Ruislip Manor, Ruislip, West Ruislip (for Central line and Chiltern Railways), Ickenham and Hillingdon. Replacement bus service PL4 operates between Acton Town and Rayners Lane via Ealing Common, North Ealing, Hanger Lane (for Central line and Park Royal), Alperton, Sudbury Town (Whitton Avenue East), Sudbury Hill and South Harrow."
+    "status": "Good Service",
+    "reason": ""
   },
   {
     "mode": "tube",
@@ -62,7 +62,7 @@
   {
     "mode": "tube",
     "line": "Waterloo & City",
-    "status": "Planned Closure",
-    "reason": "Waterloo & City line: service operates between 06:00 and 00:30, Monday to Friday only. There is no service on Saturdays, Sundays and on bank/public holidays."
+    "status": "Good Service",
+    "reason": ""
   }
 ]

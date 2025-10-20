@@ -59,33 +59,38 @@
         <div class="panel-title">Upcoming departures for {{ station }}</div>
 
         {% if trains %}
-          {% for platform, rows in trains.items() %}
-            <div class="platform-block">
-              <h3>Platform {{ platform }}</h3>
-              <table class="departures-table">
-                <thead>
-                  <tr><th>Time</th><th>Destination</th><th>Plat</th><th>Status</th><th>Operator</th></tr>
-                </thead>
-                <tbody>
-                  {% for t in rows %}
-                    <tr>
-                      {% if t is mapping %}
-                        <td>{{ t.get('std') or t.get('time') or '' }}</td>
-                        <td>{{ t.get('destination') or t.get('dest') or 'Unknown' }}</td>
-                        <td>{{ t.get('platform') or '-' }}</td>
-                        <td class="status {% if (t.get('etd','')|lower) not in ['on time','due',''] %}late{% endif %}">
-                          {{ t.get('etd') or 'On time' }}
-                        </td>
-                        <td>{{ t.get('operator') or t.get('operatorName') or '' }}{% if t.get('operatorCode') %} ({{ t.get('operatorCode') }}){% endif %}</td>
-                      {% else %}
-                        <td colspan="5">{{ t }}</td>
-                      {% endif %}
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          {% endfor %}
+          <table class="departures-table">
+            <thead>
+              <tr><th>Time</th><th>Destination</th><th>Plat</th><th>Status</th><th>Operator</th></tr>
+            </thead>
+            <tbody>
+              {% for platform, rows in trains.items() %}
+                <tr>
+                  <td colspan="5" style="color: var(--teletext-yellow); font-weight: bold; border-bottom: 1px solid var(--teletext-yellow); background: #000;">
+                    Platform {{ platform }}
+                  </td>
+                </tr>
+                {% for t in rows %}
+                  {% set is_late = (t.get('etd','')|lower) not in ['on time','due',''] %}
+                  <tr>
+                    {% if t is mapping %}
+                      <td class="time {% if is_late %}late{% else %}ontime{% endif %}">
+                        {{ t.get('std') or t.get('time') or '' }}
+                      </td>
+                      <td>{{ t.get('destination') or t.get('dest') or 'Unknown' }}</td>
+                      <td>{{ t.get('platform') or '-' }}</td>
+                      <td class="status {% if is_late %}late{% else %}ontime{% endif %}">
+                        {{ t.get('etd') or 'On time' }}
+                      </td>
+                      <td>{{ t.get('operator') or t.get('operatorName') or '' }}{% if t.get('operatorCode') %} ({{ t.get('operatorCode') }}){% endif %}</td>
+                    {% else %}
+                      <td colspan="5">{{ t }}</td>
+                    {% endif %}
+                  </tr>
+                {% endfor %}
+              {% endfor %}
+            </tbody>
+          </table>
         {% else %}
           <div class="muted">No train departures available</div>
         {% endif %}
