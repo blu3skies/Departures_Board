@@ -116,7 +116,7 @@ def index():
     tube_good = [t for t in tubes if t.get("severity") == "good"]
     if tube_issues:
         if tube_good:
-            summary = f"Good service on {len(tube_good)} other line{'s' if len(tube_good) != 1 else ''}."
+            summary = f"Good service on all other line{'s' if len(tube_good) != 1 else ''}."
         else:
             summary = ""
     else:

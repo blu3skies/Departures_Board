@@ -42,7 +42,7 @@
                     <span style="background: {{ colour }}"></span>
                   {% endfor %}
                 </div>
-                <div class="tube-name">Good service</div>
+                <div class="tube-name"></div>
                 <div class="tube-status-text">{{ tube_good_summary }}</div>
               </div>
             {% endif %}
@@ -143,16 +143,18 @@
           <div class="weather-grid">
             {% for seg in segments %}
               <div class="weather-seg">
-                <div class="seg-title">{{ seg.title }}</div>
-                <div class="seg-main">
-                  {{ seg.sky_icon }} | {{ seg.rain_probability }}% rain |
-                  {{ seg.wind_speed }} km/h {{ seg.wind_dir }}
+                <div class="seg-icon">{{ seg.sky_icon }}</div>
+                <div class="seg-info">
+                  <div class="seg-title">{{ seg.title }}</div>
+                  <div class="seg-line">{{ seg.rain_probability }}% rain</div>
+                  <div class="seg-line">{{ seg.wind_speed }} km/h {{ seg.wind_dir }}</div>
                 </div>
               </div>
             {% endfor %}
           </div>
           <div class="muted">
-            High: {{ weather.high_temp }}° • Low: {{ weather.low_temp }}° •
+            <span class="high">High:</span> {{ weather.high_temp }}° • 
+            <span class="low">Low:</span> {{ weather.low_temp }}° • 
             Sunrise: {{ weather.sunrise }} • Sunset: {{ weather.sunset }}
           </div>
         {% else %}

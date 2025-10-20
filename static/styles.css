@@ -14,6 +14,8 @@
   --teletext-grey: #999999;
   --teletext-purple: #b366ff;
   --teletext-cyan: #00ffff;
+  --teletext-orange: #ff9933;
+  --teletext-lightblue: #66ccff;
 }
 
 body {
@@ -95,6 +97,7 @@ body::after {
   margin-bottom: 4px;
   padding-bottom: 2px;
   font-weight: bold;
+  color: var(--teletext-purple);
 }
 
 /* Tube rows */
@@ -143,11 +146,7 @@ body::after {
 }
 
 /* Tube “Show details” popup */
-
-.tube-reason-container {
-  position: relative;
-}
-
+.tube-reason-container { position: relative; }
 .tube-reason-popup {
   display: none;
   position: absolute;
@@ -166,13 +165,9 @@ body::after {
   text-align: left;
   overflow-wrap: break-word;
 }
-
-.tube-reason-popup.active {
-  display: block;
-}
+.tube-reason-popup.active { display: block; }
 
 /* Train Departures */
-.platform-block { margin-bottom: 8px; }
 .departures-table {
   width: 100%;
   border-collapse: collapse;
@@ -185,15 +180,16 @@ body::after {
 }
 .departures-table th { color: var(--teletext-white); }
 
+/* Platform headings (cyan) */
+.departures-table td[colspan="5"] {
+  color: var(--teletext-cyan);
+  font-weight: bold;
+  border-bottom: 1px solid var(--teletext-cyan);
+}
+
 /* On-time / Delayed */
-.time.late, .status.late {
-  color: var(--teletext-red);
-  font-weight: bold;
-}
-.time.ontime, .status.ontime {
-  color: var(--teletext-green);
-  font-weight: bold;
-}
+.time.late, .status.late { color: var(--teletext-red); font-weight: bold; }
+.time.ontime, .status.ontime { color: var(--teletext-green); font-weight: bold; }
 
 /* Buses */
 .bus-table {
@@ -209,22 +205,72 @@ body::after {
 .bus-table th { color: var(--teletext-white); }
 
 /* Weather */
-.weather-panel {
-  border: 1px solid var(--teletext-white);
-  background: #000;
-}
 .weather-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 4px;
 }
+
 .weather-seg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   border: 1px solid var(--teletext-white);
-  padding: 4px;
+  padding: 6px;
+  background: #000;
   color: var(--teletext-white);
 }
-.seg-title { color: var(--teletext-white); }
-.seg-main { color: var(--teletext-cyan); }
+
+.weather-seg .seg-icon {
+  font-size: 48px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.weather-seg .seg-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.2;
+}
+
+/* Weather sub-headings (cyan) */
+.seg-title {
+  color: var(--teletext-cyan);
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.seg-line { color: var(--teletext-white); }
+
+/* Weather footer summary */
+.weather-panel .muted {
+  text-align: center;
+  margin-top: 4px;
+  color: var(--teletext-white);
+}
+
+/* Highlight “High” and “Low” in footer */
+.weather-panel .muted {
+  font-size: 18px;
+}
+
+.weather-panel .muted::before,
+.weather-panel .muted::after {
+  content: '';
+}
+
+.weather-panel .muted {
+  color: var(--teletext-white);
+}
+
+.weather-panel .muted span.high {
+  color: var(--teletext-orange);
+}
+
+.weather-panel .muted span.low {
+  color: var(--teletext-lightblue);
+}
 
 /* Footer */
 .footer {
@@ -235,23 +281,17 @@ body::after {
   font-size: 16px;
 }
 
-/* Title colours */
-.tube-panel .panel-title {
+/* Title colours – all purple now */
+.tube-panel .panel-title,
+.bus-panel .panel-title,
+.train-panel .panel-title,
+.weather-panel .panel-title {
   color: var(--teletext-purple);
-}
-.bus-panel .panel-title {
-  color: var(--teletext-red);
-}
-.train-panel .panel-title {
-  color: var(--teletext-cyan);
 }
 
 /* Responsive tweaks */
 @media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto auto;
-  }
+  .layout { grid-template-columns: 1fr; grid-template-rows: auto auto auto auto; }
   .train-panel { grid-column: 1; grid-row: 2; }
   .weather-panel { grid-column: 1; grid-row: 4; }
 }
