@@ -180,8 +180,8 @@ body::after {
 }
 .departures-table th,
 .departures-table td {
-  padding: 2px 6px;
-  border-bottom: 1px solid var(--teletext-white);
+  padding: 1px 3px;
+  border-bottom: none;
 }
 .departures-table th { color: var(--teletext-white); }
 
@@ -203,8 +203,8 @@ body::after {
 }
 .bus-table th,
 .bus-table td {
-  padding: 2px 6px;
-  border-bottom: 1px solid var(--teletext-white);
+  padding: 1px 3px;
+  border-bottom: none;
 }
 .bus-table th { color: var(--teletext-white); }
 
