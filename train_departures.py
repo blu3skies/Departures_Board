@@ -50,7 +50,7 @@ def _extract(obj, *keys):
     return cur
 
 
-def get_departures(station_code: str, rows: int = 10):
+def get_departures(station_code: str, rows: int = 12):
     """Fetch raw departures data from the National Rail API and return a list of simple dicts."""
     if not TOKEN:
         raise RuntimeError("NATIONAL_RAIL_TOKEN is not set")
@@ -123,7 +123,7 @@ def get_departures(station_code: str, rows: int = 10):
     return results
 
 
-def get_train_departures(station_code: str, rows: int = 10):
+def get_train_departures(station_code: str, rows: int = 12):
     """
     Returns departures grouped by platform for display.
     """

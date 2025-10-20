@@ -17,7 +17,7 @@
     <div class="layout">
       <!-- Tube Status -->
       <aside class="panel tube-panel">
-        <div class="panel-title">TFL Tube Status</div>
+        <div class="panel-title">London Underground Status</div>
 
         {% if tube_has_data and (tubes or tube_good_summary) %}
           <div class="tube-status-list">
@@ -56,7 +56,7 @@
 
       <!-- Train Departures -->
       <main class="panel train-panel">
-        <div class="panel-title">Upcoming departures for {{ station }}</div>
+        <div class="panel-title">Upcoming departures for Herne Hill</div>
 
         {% if trains %}
           <table class="departures-table">
@@ -98,7 +98,7 @@
 
       <!-- Bus Arrivals -->
       <section class="panel bus-panel">
-        <div class="panel-title">Nearby Buses</div>
+        <div class="panel-title">Buses to Brixton</div>
 
         {% if buses %}
           <table class="bus-table">
