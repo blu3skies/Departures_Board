@@ -123,10 +123,13 @@ def index():
         summary = "Good service on all lines." if tube_good else ""
     tube_good_colours = [t.get("color") for t in tube_good if t.get("color")][:12]
     weather = get_todays_weather()
+    now = datetime.now()
+    current_datetime = now.strftime("%d %b %Y - %H:%M")
 
     return render_template(
         "index.html",
-        updated=datetime.now().strftime("%H:%M:%S"),
+        updated=now.strftime("%H:%M:%S"),
+        current_datetime=current_datetime,
         station=station,
         trains=trains,
         buses=buses,

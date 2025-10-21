@@ -1,124 +1,154 @@
 {
   "1": [
     {
-      "std": "20:27",
+      "std": "15:12",
       "destination": "St Albans",
       "platform": "1",
-      "etd": "20:30",
+      "etd": "15:25",
       "operator": "Thameslink",
-      "operatorCode": "TL"
+      "operatorCode": "TL",
+      "due_in_mins": 1431
     },
     {
-      "std": "20:42",
-      "destination": "St Albans",
-      "platform": "1",
-      "etd": "On time",
-      "operator": "Thameslink",
-      "operatorCode": "TL"
-    },
-    {
-      "std": "20:57",
+      "std": "15:27",
       "destination": "St Albans",
       "platform": "1",
       "etd": "On time",
       "operator": "Thameslink",
-      "operatorCode": "TL"
+      "operatorCode": "TL",
+      "due_in_mins": 6
     },
     {
-      "std": "21:12",
+      "std": "15:42",
       "destination": "St Albans",
-      "platform": "-",
+      "platform": "1",
       "etd": "On time",
       "operator": "Thameslink",
-      "operatorCode": "TL"
+      "operatorCode": "TL",
+      "due_in_mins": 21
+    },
+    {
+      "std": "15:57",
+      "destination": "St Albans",
+      "platform": "1",
+      "etd": "16:01",
+      "operator": "Thameslink",
+      "operatorCode": "TL",
+      "due_in_mins": 36
     }
   ],
   "2": [
     {
-      "std": "20:38",
-      "destination": "London Blackfriars",
+      "std": "15:23",
+      "destination": "London Victoria",
       "platform": "2",
-      "etd": "On time",
-      "operator": "Thameslink",
-      "operatorCode": "TL"
+      "etd": "15:27",
+      "operator": "Southeastern",
+      "operatorCode": "SE",
+      "due_in_mins": 2
     },
     {
-      "std": "20:53",
+      "std": "15:38",
       "destination": "London Victoria",
       "platform": "2",
       "etd": "On time",
       "operator": "Southeastern",
-      "operatorCode": "SE"
+      "operatorCode": "SE",
+      "due_in_mins": 17
+    },
+    {
+      "std": "15:53",
+      "destination": "London Victoria",
+      "platform": "2",
+      "etd": "On time",
+      "operator": "Southeastern",
+      "operatorCode": "SE",
+      "due_in_mins": 32
+    },
+    {
+      "std": "16:08",
+      "destination": "London Victoria",
+      "platform": "-",
+      "etd": "On time",
+      "operator": "Southeastern",
+      "operatorCode": "SE",
+      "due_in_mins": 47
     }
   ],
   "3": [
     {
-      "std": "20:37",
+      "std": "15:22",
       "destination": "Orpington",
       "platform": "3",
-      "etd": "On time",
+      "etd": "15:28",
       "operator": "Southeastern",
-      "operatorCode": "SE"
+      "operatorCode": "SE",
+      "due_in_mins": 1
     },
     {
-      "std": "21:07",
+      "std": "15:37",
       "destination": "Orpington",
       "platform": "3",
       "etd": "On time",
       "operator": "Southeastern",
-      "operatorCode": "SE"
+      "operatorCode": "SE",
+      "due_in_mins": 16
+    },
+    {
+      "std": "15:52",
+      "destination": "Orpington",
+      "platform": "3",
+      "etd": "On time",
+      "operator": "Southeastern",
+      "operatorCode": "SE",
+      "due_in_mins": 31
+    },
+    {
+      "std": "16:07",
+      "destination": "Orpington",
+      "platform": "-",
+      "etd": "On time",
+      "operator": "Southeastern",
+      "operatorCode": "SE",
+      "due_in_mins": 46
     }
   ],
   "4": [
     {
-      "std": "20:30",
-      "destination": "Sevenoaks",
-      "platform": "4",
-      "etd": "On time",
-      "operator": "Thameslink",
-      "operatorCode": "TL"
-    },
-    {
-      "std": "20:35",
+      "std": "15:20",
       "destination": "Sutton (London)",
       "platform": "4",
       "etd": "On time",
       "operator": "Thameslink",
-      "operatorCode": "TL"
+      "operatorCode": "TL",
+      "due_in_mins": 0
     },
     {
-      "std": "20:50",
+      "std": "15:35",
       "destination": "Sutton (London)",
       "platform": "4",
       "etd": "On time",
       "operator": "Thameslink",
-      "operatorCode": "TL"
+      "operatorCode": "TL",
+      "due_in_mins": 14
     },
     {
-      "std": "20:59",
-      "destination": "Sevenoaks",
+      "std": "15:50",
+      "destination": "Sutton (London)",
       "platform": "4",
       "etd": "On time",
       "operator": "Thameslink",
-      "operatorCode": "TL"
+      "operatorCode": "TL",
+      "due_in_mins": 29
     },
     {
-      "std": "21:05",
+      "std": "16:05",
       "destination": "Sutton (London)",
-      "platform": "4",
-      "etd": "21:13",
-      "operator": "Thameslink",
-      "operatorCode": "TL"
-    }
-  ],
-  "-": [
-    {
-      "std": "21:15",
-      "destination": "London Blackfriars",
       "platform": "-",
       "etd": "On time",
       "operator": "Thameslink",
-      "operatorCode": "TL"
+      "operatorCode": "TL",
+      "due_in_mins": 44
     }
   ]
 }

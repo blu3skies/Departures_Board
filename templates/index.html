@@ -10,7 +10,8 @@
 <body>
   <div class="screen">
     <div class="header">
-      <div class="title">London Board — {{ station }}</div>
+      <div class="title">London Home Travel Board </div>
+      <div class="header-center">{{ current_datetime }}</div>
       <div class="panel-updated">Updated: {{ updated }}</div>
     </div>
 
@@ -81,6 +82,9 @@
                       <td>{{ t.get('platform') or '-' }}</td>
                       <td class="status {% if is_late %}late{% else %}ontime{% endif %}">
                         {{ t.get('etd') or 'On time' }}
+                        {% if t.get('due_in_mins') %}
+                          ({{ t.get('due_in_mins') }} min{{ 's' if t.get('due_in_mins') > 1 else '' }})
+                        {% endif %}
                       </td>
                       <td>{{ t.get('operator') or t.get('operatorName') or '' }}{% if t.get('operatorCode') %} ({{ t.get('operatorCode') }}){% endif %}</td>
                     {% else %}

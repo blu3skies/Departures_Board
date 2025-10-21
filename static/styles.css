@@ -85,6 +85,15 @@ body::after {
   padding: 4px 8px;
   border-bottom: 2px solid var(--teletext-white);
   font-size: 22px;
+  position: relative;
+}
+
+.header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: var(--teletext-white);
 }
 
 .title { text-transform: uppercase; letter-spacing: 1px; }
