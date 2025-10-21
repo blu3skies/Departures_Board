@@ -172,6 +172,10 @@ def get_train_departures(station_code: str, rows: int = 12):
         "London Victoria": "2",
         "St Albans": "1",
         "St Albans City": "1",
+        "Bedford": "1",
+        "Luton": "1",
+        "Gatwick Airport": "4"
+
     }
 
     grouped = defaultdict(list)
