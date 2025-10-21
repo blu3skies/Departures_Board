@@ -122,7 +122,7 @@ def get_train_departures(station_code: str, rows: int = 12):
     """
     Returns departures grouped by platform for display,
     including 'due in X mins' calculated using ETD if delayed,
-    otherwise STD.
+    otherwise STD. Also handles 'Due' and 'Cancelled' cases.
     """
     raw = get_departures(station_code, rows)
 
@@ -134,8 +134,12 @@ def get_train_departures(station_code: str, rows: int = 12):
             etd_clean = (etd or "").strip().lower()
             use_time = std
 
-            # If etd is an actual time (like 15:25), prefer it
-            if etd_clean not in ("on time", "ontime", "due", "", "cancelled", "no report"):
+            # Skip if cancelled or no report
+            if etd_clean in ("cancelled", "no report"):
+                return ""
+
+            # Prefer ETD if it's a valid time (like 15:25)
+            if etd_clean not in ("on time", "ontime", "due", "", "delayed"):
                 if ":" in etd_clean:
                     use_time = etd
 
@@ -146,13 +150,16 @@ def get_train_departures(station_code: str, rows: int = 12):
                 year=now.year, month=now.month, day=now.day
             )
 
-            # If train time is behind current time (by >5 mins), assume next day
+            # Handle midnight rollover
             if (dep_time - now).total_seconds() < -300:
                 dep_time += timedelta(days=1)
 
             diff = int((dep_time - now).total_seconds() // 60)
-            if diff < 0:
-                diff = 0
+
+            # Show "Due" if less than 1 min
+            if diff <= 1:
+                return "Due"
+
             return str(diff)
         except Exception as e:
             print(f"DEBUG: Failed to calculate due_in for std={std}, etd={etd}: {e}")
@@ -174,7 +181,17 @@ def get_train_departures(station_code: str, rows: int = 12):
         std = t.get("std", "")
         etd = t.get("etd", "")
         due_in = _calculate_due_in(std, etd)
-        t["due_in_mins"] = int(due_in) if due_in else None
+
+        # Store as both integer and text for flexibility in HTML
+        if due_in in ("", "Due"):
+            t["due_in_mins"] = None
+        else:
+            try:
+                t["due_in_mins"] = int(due_in)
+            except ValueError:
+                t["due_in_mins"] = None
+
+        t["due_in_text"] = due_in
 
         platform = t.get("platform", "-") or "-"
         destination = t.get("destination", "Unknown")

@@ -9,14 +9,15 @@
 </head>
 <body>
   <div class="screen">
+    <!-- HEADER BAR -->
     <div class="header">
-      <div class="title">London Home Travel Board </div>
+      <div class="title">London Home Travel Board</div>
       <div class="header-center">{{ current_datetime }}</div>
       <div class="panel-updated">Updated: {{ updated }}</div>
     </div>
 
     <div class="layout">
-      <!-- Tube Status -->
+      <!-- TUBE STATUS -->
       <aside class="panel tube-panel">
         <div class="panel-title">London Underground Status</div>
 
@@ -55,24 +56,32 @@
         {% endif %}
       </aside>
 
-      <!-- Train Departures -->
+      <!-- TRAIN DEPARTURES -->
       <main class="panel train-panel">
         <div class="panel-title">Upcoming departures for Herne Hill</div>
 
         {% if trains %}
           <table class="departures-table">
             <thead>
-              <tr><th>Time</th><th>Destination</th><th>Plat</th><th>Status</th><th>Operator</th></tr>
+              <tr>
+                <th>Time</th>
+                <th>Destination</th>
+                <th>Plat</th>
+                <th>Status</th>
+                <th>Operator</th>
+              </tr>
             </thead>
             <tbody>
               {% for platform, rows in trains.items() %}
                 <tr>
-                  <td colspan="5" style="color: var(--teletext-yellow); font-weight: bold; border-bottom: 1px solid var(--teletext-yellow); background: #000;">
+                  <td colspan="5" style="color: var(--teletext-cyan); font-weight: bold; border-bottom: 1px solid var(--teletext-white); background: #000;">
                     Platform {{ platform }}
                   </td>
                 </tr>
                 {% for t in rows %}
                   {% set is_late = (t.get('etd','')|lower) not in ['on time','due',''] %}
+                  {% set etd_text = t.get('etd','') %}
+                  {% set due_text = t.get('due_in_text','') %}
                   <tr>
                     {% if t is mapping %}
                       <td class="time {% if is_late %}late{% else %}ontime{% endif %}">
@@ -81,12 +90,21 @@
                       <td>{{ t.get('destination') or t.get('dest') or 'Unknown' }}</td>
                       <td>{{ t.get('platform') or '-' }}</td>
                       <td class="status {% if is_late %}late{% else %}ontime{% endif %}">
-                        {{ t.get('etd') or 'On time' }}
-                        {% if t.get('due_in_mins') %}
-                          ({{ t.get('due_in_mins') }} min{{ 's' if t.get('due_in_mins') > 1 else '' }})
+                        {% if etd_text|lower == 'cancelled' %}
+                          Cancelled
+                        {% else %}
+                          {{ etd_text or 'On time' }}
+                          {% if due_text == 'Due' %}
+                            (Due)
+                          {% elif t.get('due_in_mins') %}
+                            ({{ t.get('due_in_mins') }} min{{ 's' if t.get('due_in_mins') > 1 else '' }})
+                          {% endif %}
                         {% endif %}
                       </td>
-                      <td>{{ t.get('operator') or t.get('operatorName') or '' }}{% if t.get('operatorCode') %} ({{ t.get('operatorCode') }}){% endif %}</td>
+                      <td>
+                        {{ t.get('operator') or t.get('operatorName') or '' }}
+                        {% if t.get('operatorCode') %} ({{ t.get('operatorCode') }}){% endif %}
+                      </td>
                     {% else %}
                       <td colspan="5">{{ t }}</td>
                     {% endif %}
@@ -100,13 +118,15 @@
         {% endif %}
       </main>
 
-      <!-- Bus Arrivals -->
+      <!-- BUS ARRIVALS -->
       <section class="panel bus-panel">
         <div class="panel-title">Buses to Brixton</div>
 
         {% if buses %}
           <table class="bus-table">
-            <thead><tr><th>Line</th><th>Destination</th><th>In</th></tr></thead>
+            <thead>
+              <tr><th>Line</th><th>Destination</th><th>In</th></tr>
+            </thead>
             <tbody>
               {% for b in buses %}
                 <tr>
@@ -122,7 +142,7 @@
         {% endif %}
       </section>
 
-      <!-- Weather -->
+      <!-- WEATHER -->
       <section class="panel weather-panel">
         <div class="panel-title">Today's Weather</div>
 
@@ -167,6 +187,7 @@
       </section>
     </div>
 
+    <!-- FOOTER -->
     <div class="footer">
       <div class="muted">Data sources: National Rail / TFL / Weather</div>
       <div class="muted">Board auto-refreshes every 60 s</div>
