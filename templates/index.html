@@ -128,11 +128,22 @@
               <tr><th>Line</th><th>Destination</th><th>In</th></tr>
             </thead>
             <tbody>
-              {% for b in buses %}
+                {% for b in buses %}
                 <tr>
                   <td>{{ b.get('line') or b.get('route') or b.get('service') or '—' }}</td>
                   <td>{{ b.get('destination') or b.get('towards') or 'Unknown' }}</td>
-                  <td>{{ b.get('expected_in_min') or '—' }} min</td>
+                  <td>
+                    {% set mins = (b.get('expected_in_min') if b.get('expected_in_min') is not none else b.get('expected_in_minutes') if b.get('expected_in_minutes') is not none else None) %}
+                    {% if mins is not none %}
+                      {% if mins|int <= 0 %}
+                        Due
+                      {% else %}
+                        {{ mins }} min
+                      {% endif %}
+                    {% else %}
+                      —
+                    {% endif %}
+                  </td>
                 </tr>
               {% endfor %}
             </tbody>

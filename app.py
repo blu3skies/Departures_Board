@@ -4,6 +4,9 @@ from datetime import datetime
 from flask import Flask, render_template, jsonify
 
 from train_departures import get_train_departures
+import json
+from pathlib import Path
+import requests
 from bus_departures import get_bus_departures
 from tube_status import get_tube_status
 from weather_forecast import get_todays_weather
@@ -108,7 +111,33 @@ def index():
     rows = int(os.getenv("ROW_COUNT", "10"))
     bus_stop = os.getenv("BUS_STOP_ID", "")
 
-    trains = get_train_departures(station, rows)
+    # Load trains, but fall back to cached data on network errors
+    cache_dir = Path(".cache")
+    cache_dir.mkdir(exist_ok=True)
+    cache_file = cache_dir / "trains.json"
+
+    try:
+        trains = get_train_departures(station, rows)
+        # save successful fetch to cache
+        try:
+            with cache_file.open("w", encoding="utf-8") as cf:
+                json.dump({"fetched_at": datetime.now().isoformat(), "trains": trains}, cf)
+        except Exception as exc:
+            app.logger.warning("Failed to write trains cache: %s", exc)
+    except requests.exceptions.RequestException as exc:
+        app.logger.warning("Train fetch failed, attempting to load cache: %s", exc)
+        # try to load cached trains
+        if cache_file.exists():
+            try:
+                with cache_file.open("r", encoding="utf-8") as cf:
+                    blob = json.load(cf)
+                    trains = blob.get("trains", {})
+                    app.logger.info("Loaded %s cached train platforms", len(trains))
+            except Exception as exc2:
+                app.logger.error("Failed to read trains cache: %s", exc2)
+                trains = {}
+        else:
+            trains = {}
     buses = get_bus_departures(bus_stop, limit=8) if bus_stop else []
     raw_tubes = get_tube_status(["tube"])  # change list to include other modes if you want
     tubes = _normalize_tubes(raw_tubes)
