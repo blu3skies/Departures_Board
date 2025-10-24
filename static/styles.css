@@ -112,19 +112,64 @@ body::after {
 /* Tube rows */
 .tube-status-list { display: flex; flex-direction: column; gap: 2px; }
 .tube-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
   border-left: 6px solid var(--tube-color, var(--teletext-white));
   padding: 3px 6px;
   background: #000;
   color: var(--teletext-white);
+  gap: 15px;
 }
 .tube-row.major { color: var(--teletext-red); }
 .tube-row.warn { color: var(--teletext-yellow); }
+.tube-row.good { color: var(--teletext-green); }
 
-/* “Good Service” summary */
-.tube-summary { border-left: none; display: flex; align-items: center; }
+/* Severity-specific styling for tube names and status text */
+.tube-row.major .tube-name,
+.tube-row.major .tube-status-text {
+  color: var(--teletext-red);
+}
+
+.tube-row.warn .tube-name,
+.tube-row.warn .tube-status-text {
+  color: var(--teletext-yellow);
+}
+
+.tube-row.good .tube-name,
+.tube-row.good .tube-status-text {
+  color: var(--teletext-green);
+}
+
+/* Tube row elements */
+.tube-name {
+  grid-column: 1;
+  min-width: 100px; /* Fixed width for line names */
+}
+
+.tube-status-text {
+  grid-column: 2;
+  text-align: center;
+  justify-self: center; /* Center within the flexible space */
+}
+
+.tube-reason-container {
+  grid-column: 3;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* "Good Service" summary */
+.tube-summary { 
+  border-left: none; 
+  display: flex; 
+  align-items: center; 
+  color: var(--teletext-green);
+}
+
+.tube-summary .tube-status-text {
+  color: var(--teletext-green);
+}
 .tube-summary-swatches {
   display: flex;
   flex-direction: column;
