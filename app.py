@@ -138,8 +138,20 @@ def index():
                 trains = {}
         else:
             trains = {}
-    buses = get_bus_departures(bus_stop, limit=8) if bus_stop else []
-    raw_tubes = get_tube_status(["tube"])  # change list to include other modes if you want
+    # Load buses with error handling
+    try:
+        buses = get_bus_departures(bus_stop, limit=8) if bus_stop else []
+    except Exception as exc:
+        app.logger.warning("Bus fetch failed: %s", exc)
+        buses = []
+    
+    # Load tube status with error handling
+    try:
+        raw_tubes = get_tube_status(["tube"])  # change list to include other modes if you want
+    except Exception as exc:
+        app.logger.warning("Tube status fetch failed: %s", exc)
+        raw_tubes = []
+    
     tubes = _normalize_tubes(raw_tubes)
     tube_issues = [t for t in tubes if t.get("severity") != "good"]
     tube_good = [t for t in tubes if t.get("severity") == "good"]

@@ -166,6 +166,7 @@
                 'rain_probability': seg.get('rain_probability'),
                 'rain_intensity': seg.get('rain_intensity'),
                 'sky_icon': seg.get('sky_icon'),
+                'temp': seg.get('temp'),
                 'wind_speed': seg.get('wind_speed'),
                 'wind_gusts': seg.get('wind_gusts'),
                 'wind_dir': seg.get('wind_dir')
@@ -181,8 +182,13 @@
                 <div class="seg-icon">{{ seg.sky_icon }}</div>
                 <div class="seg-info">
                   <div class="seg-title">{{ seg.title }}</div>
-                  <div class="seg-line">{{ seg.rain_probability }}% rain</div>
-                  <div class="seg-line">{{ seg.wind_speed }} km/h {{ seg.wind_dir }}</div>
+                    <div class="seg-line">{{ seg.rain_probability }}% rain</div>
+                    <div class="seg-line">
+                      {% if seg.temp is not none %}
+                        {{ seg.temp }}° • 
+                      {% endif %}
+                      {{ seg.wind_speed }} km/h {{ seg.wind_dir }}
+                    </div>
                 </div>
               </div>
             {% endfor %}

@@ -3,6 +3,7 @@ import requests
 from datetime import datetime
 from typing import Dict, Any
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 
@@ -21,6 +22,21 @@ def deg_to_cardinal(deg: float) -> str:
     ix = round(deg / 45) % 8
     return dirs[ix]
 
+
+def _get_default_weather() -> Dict[str, Any]:
+    """Return default weather data when API fails."""
+    return {
+        "high": 15,
+        "low": 8,
+        "sunrise": "07:00",
+        "sunset": "18:00",
+        "periods": [
+            {"time": "Morning", "temp": 10, "rain": 20, "wind": 15, "icon": "🌤️"},
+            {"time": "Midday", "temp": 14, "rain": 10, "wind": 12, "icon": "☀️"},
+            {"time": "Afternoon", "temp": 16, "rain": 5, "wind": 10, "icon": "☀️"},
+            {"time": "Evening", "temp": 12, "rain": 15, "wind": 8, "icon": "🌤️"}
+        ]
+    }
 
 def classify_weather(code: int | None, cloud: float | None, rain_mm: float) -> str:
     """Return emoji based on weather code and cloud cover."""
@@ -80,9 +96,26 @@ def get_todays_weather(lat: float = LAT, lon: float = LON) -> Dict[str, Any]:
         "timezone": "Europe/London",
     }
 
-    response = requests.get(OPEN_METEO_URL, params=params, timeout=10)
-    response.raise_for_status()
-    js = response.json()
+    # Retry logic with exponential backoff
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            # Increase timeout to 30 seconds
+            response = requests.get(OPEN_METEO_URL, params=params, timeout=30)
+            response.raise_for_status()
+            js = response.json()
+            break
+        except requests.exceptions.ReadTimeout:
+            if attempt < max_retries - 1:
+                wait_time = 2 ** attempt  # Exponential backoff: 1s, 2s, 4s
+                print(f"Weather API timeout, retrying in {wait_time}s (attempt {attempt + 1}/{max_retries})")
+                time.sleep(wait_time)
+            else:
+                print("Weather API failed after all retries, returning default data")
+                return _get_default_weather()
+        except requests.exceptions.RequestException as e:
+            print(f"Weather API request failed: {e}")
+            return _get_default_weather()
 
     hourly = js["hourly"]
     times = [datetime.fromisoformat(t) for t in hourly["time"]]
@@ -124,11 +157,13 @@ def get_todays_weather(lat: float = LAT, lon: float = LON) -> Dict[str, Any]:
         wind = segment_avg(wind_speed, start, end)
         gusts = segment_avg(wind_gusts, start, end)
         direction_deg = segment_avg(wind_dir, start, end)
+        temp_avg = segment_avg(temps, start, end)
 
         forecast[label] = {
             "rain_probability": round(rain_prob or 0, 1),
             "rain_intensity": round(rain_mm or 0, 2),
             "sky_icon": classify_weather(code, cloud, rain_mm or 0),
+            "temp": round(temp_avg, 1) if temp_avg is not None else None,
             "wind_speed": round(wind or 0, 1),
             "wind_gusts": round(gusts or 0, 1),
             "wind_dir": deg_to_cardinal(direction_deg or 0),

@@ -2,6 +2,7 @@ import os
 import requests
 from dotenv import load_dotenv
 from typing import List, Dict
+import time
 
 load_dotenv()
 
@@ -25,9 +26,26 @@ def get_tube_status(modes: List[str] | None = None) -> List[Dict]:
     if SUBSCRIPTION_KEY:
         headers["Ocp-Apim-Subscription-Key"] = SUBSCRIPTION_KEY
 
-    response = requests.get(url, headers=headers, timeout=10)
-    response.raise_for_status()
-    data = response.json()
+    # Retry logic with exponential backoff
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            # Increase timeout to 30 seconds
+            response = requests.get(url, headers=headers, timeout=30)
+            response.raise_for_status()
+            data = response.json()
+            break
+        except requests.exceptions.ReadTimeout:
+            if attempt < max_retries - 1:
+                wait_time = 2 ** attempt  # Exponential backoff: 1s, 2s, 4s
+                print(f"TfL API timeout, retrying in {wait_time}s (attempt {attempt + 1}/{max_retries})")
+                time.sleep(wait_time)
+            else:
+                print("TfL API failed after all retries, returning empty list")
+                return []
+        except requests.exceptions.RequestException as e:
+            print(f"TfL API request failed: {e}")
+            return []
 
     statuses = []
     for line in data:

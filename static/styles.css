@@ -184,10 +184,13 @@ body::after {
 }
 .departures-table th,
 .departures-table td {
-  padding: 1px 3px;
+  padding: 0px 2px;
   border-bottom: none;
 }
-.departures-table th { color: var(--teletext-white); }
+.departures-table th { 
+  color: var(--teletext-white);
+  text-align: left;
+}
 
 /* Platform headings (cyan) */
 .departures-table td[colspan="5"] {
