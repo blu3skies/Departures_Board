@@ -172,12 +172,59 @@ def get_todays_weather(lat: float = LAT, lon: float = LON) -> Dict[str, Any]:
     sunrise = js["daily"]["sunrise"][0].split("T")[1][:5]
     sunset = js["daily"]["sunset"][0].split("T")[1][:5]
 
+    # Process daily forecast data (mock data for now)
+    daily_forecast = []
+    for i in range(10):
+        daily_forecast.append({
+            "date": f"2024-01-{i+1:02d}",
+            "high_temp": round(high + (i * 2), 1),
+            "low_temp": round(low + (i * 1), 1),
+            "rain_probability": round(20 + (i * 5), 1),
+            "rain_sum": round(0.5 + (i * 0.2), 2),
+            "weather_code": 1,
+            "weather_emoji": "☀️" if i % 2 == 0 else "⛅",
+            "wind_speed": round(10 + (i * 2), 1),
+            "wind_direction": deg_to_cardinal(90 + (i * 45)),
+            "humidity": round(60 + (i * 3), 1),
+            "sunrise": "07:00",
+            "sunset": "18:00"
+        })
+
+    # Process hourly forecast data (next 16 hours)
+    current_hour = datetime.now().hour
+    hourly_forecast = []
+    sunset_hour = int(sunset.split(":")[0])
+    sunrise_hour = int(sunrise.split(":")[0])
+    
+    for i in range(min(16, len(times))):
+        hour_time = times[i]
+        is_night = hour_time.hour >= sunset_hour or hour_time.hour < sunrise_hour
+        
+        # Get weather emoji and modify for night if needed
+        weather_emoji = classify_weather(weather_codes[i], cloud_cover[i], rain_intensity[i])
+        if is_night and weather_emoji == "☀️":
+            weather_emoji = "🌙"
+        elif is_night and weather_emoji in ["🌤️", "⛅"]:
+            weather_emoji = "🌙"
+        
+        hourly_forecast.append({
+            "time": hour_time.strftime("%H:%M"),
+            "emoji": weather_emoji,
+            "rain_probability": round(rain_probs[i], 1),
+            "temperature": round(temps[i], 1),
+            "wind_speed": round(wind_speed[i], 1),
+            "wind_direction": deg_to_cardinal(wind_dir[i]),
+            "humidity": round(50 + (i * 2), 1)  # Mock humidity data
+        })
+
     return {
         "high_temp": high,
         "low_temp": low,
         "segments": forecast,
         "sunrise": sunrise,
         "sunset": sunset,
+        "hourly_forecast": hourly_forecast,
+        "daily_forecast": daily_forecast,
     }
 
 if __name__ == "__main__":

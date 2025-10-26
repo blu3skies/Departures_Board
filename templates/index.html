@@ -198,6 +198,9 @@
             <span class="low">Low:</span> {{ weather.low_temp }}° • 
             Sunrise: {{ weather.sunrise }} • Sunset: {{ weather.sunset }}
           </div>
+          <div class="weather-details-button">
+            <button type="button" class="weather-more-details-btn">More Details</button>
+          </div>
         {% else %}
           <div class="muted">Weather unavailable</div>
         {% endif %}
@@ -208,6 +211,91 @@
     <div class="footer">
       <div class="muted">Data sources: National Rail / TFL / Weather</div>
       <div class="muted">Board auto-refreshes every 60 s</div>
+    </div>
+
+    <!-- WEATHER DETAILS MODAL -->
+    <div class="weather-modal" id="weatherModal">
+      <div class="weather-modal-content">
+        <div class="weather-modal-header">
+          <h2>Weather Forecast Details</h2>
+          <button type="button" class="weather-modal-close">&times;</button>
+        </div>
+        
+        <div class="weather-tabs">
+          <button type="button" class="weather-tab-btn active" data-tab="hourly">Hourly Forecast</button>
+          <button type="button" class="weather-tab-btn" data-tab="daily">Daily Forecast</button>
+        </div>
+        
+        <div class="weather-tab-content">
+          <!-- Hourly Forecast Tab -->
+          <div class="weather-tab-panel active" id="hourly-tab">
+            <div class="weather-forecast-table">
+              <table class="forecast-table">
+                <thead>
+                  <tr>
+                    <th>Hour</th>
+                    <th>Emoji</th>
+                    <th>Rain %</th>
+                    <th>Temp</th>
+                    <th>Wind</th>
+                    <th>Humidity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if weather.hourly_forecast %}
+                    {% for hour in weather.hourly_forecast %}
+                      <tr>
+                        <td>{{ hour.time }}</td>
+                        <td>{{ hour.emoji }}</td>
+                        <td>{{ hour.rain_probability }}%</td>
+                        <td>{{ hour.temperature }}°</td>
+                        <td>{{ hour.wind_speed }} km/h {{ hour.wind_direction }}</td>
+                        <td>{{ hour.humidity }}%</td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr><td colspan="6">Hourly forecast unavailable</td></tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <!-- Daily Forecast Tab -->
+          <div class="weather-tab-panel" id="daily-tab">
+            <div class="weather-forecast-table">
+              <table class="forecast-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Emoji</th>
+                    <th>Rain %</th>
+                    <th>High/Low</th>
+                    <th>Wind</th>
+                    <th>Humidity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if weather.daily_forecast %}
+                    {% for day in weather.daily_forecast %}
+                      <tr>
+                        <td>{{ day.date }}</td>
+                        <td>{{ day.weather_emoji }}</td>
+                        <td>{{ day.rain_probability }}%</td>
+                        <td>{{ day.high_temp }}°/{{ day.low_temp }}°</td>
+                        <td>{{ day.wind_speed }} km/h {{ day.wind_direction }}</td>
+                        <td>{{ day.humidity }}%</td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr><td colspan="6">Daily forecast unavailable</td></tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </body>
