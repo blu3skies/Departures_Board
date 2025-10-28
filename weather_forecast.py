@@ -91,8 +91,12 @@ def get_todays_weather(lat: float = LAT, lon: float = LON) -> Dict[str, Any]:
             "weathercode,cloudcover,"
             "windspeed_10m,winddirection_10m,windgusts_10m"
         ),
-        "daily": "sunrise,sunset",
-        "forecast_days": 1,
+        "daily": (
+            "sunrise,sunset,temperature_2m_max,temperature_2m_min,"
+            "precipitation_probability_max,precipitation_sum,"
+            "weathercode,windspeed_10m_max,winddirection_10m_dominant"
+        ),
+        "forecast_days": 10,
         "timezone": "Europe/London",
     }
 
@@ -127,6 +131,9 @@ def get_todays_weather(lat: float = LAT, lon: float = LON) -> Dict[str, Any]:
     wind_speed = hourly["windspeed_10m"]
     wind_dir = hourly["winddirection_10m"]
     wind_gusts = hourly["windgusts_10m"]
+    # Mock humidity and pressure data since API doesn't provide them reliably
+    humidity = [50 + (i % 20) for i in range(len(temps))]  # Mock humidity 50-70%
+    pressure = [1013 + (i % 10) for i in range(len(temps))]  # Mock pressure 1013-1023 mb
 
     high = round(max(temps), 1)
     low = round(min(temps), 1)
@@ -172,36 +179,72 @@ def get_todays_weather(lat: float = LAT, lon: float = LON) -> Dict[str, Any]:
     sunrise = js["daily"]["sunrise"][0].split("T")[1][:5]
     sunset = js["daily"]["sunset"][0].split("T")[1][:5]
 
-    # Process daily forecast data (mock data for now)
+    # Process daily forecast data (real API data)
+    daily_data = js["daily"]
     daily_forecast = []
-    for i in range(10):
+    from datetime import datetime as dt, timedelta
+    
+    for i in range(min(10, len(daily_data["time"]))):
+        current_date = dt.now() + timedelta(days=i)
+        # Format as "Sun 26th Oct"
+        day_name = current_date.strftime("%a")
+        day_num = current_date.day
+        month_name = current_date.strftime("%b")
+        
+        # Add ordinal suffix (1st, 2nd, 3rd, 4th, etc.)
+        if 10 <= day_num % 100 <= 20:
+            suffix = 'th'
+        else:
+            suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(day_num % 10, 'th')
+        
+        formatted_date = f"{day_name} {day_num}{suffix} {month_name}"
+        
         daily_forecast.append({
-            "date": f"2024-01-{i+1:02d}",
-            "high_temp": round(high + (i * 2), 1),
-            "low_temp": round(low + (i * 1), 1),
-            "rain_probability": round(20 + (i * 5), 1),
-            "rain_sum": round(0.5 + (i * 0.2), 2),
-            "weather_code": 1,
-            "weather_emoji": "☀️" if i % 2 == 0 else "⛅",
-            "wind_speed": round(10 + (i * 2), 1),
-            "wind_direction": deg_to_cardinal(90 + (i * 45)),
-            "humidity": round(60 + (i * 3), 1),
-            "sunrise": "07:00",
-            "sunset": "18:00"
+            "date": formatted_date,
+            "high_temp": round(daily_data["temperature_2m_max"][i], 1),
+            "low_temp": round(daily_data["temperature_2m_min"][i], 1),
+            "rain_probability": round(daily_data["precipitation_probability_max"][i], 1),
+            "rain_sum": round(daily_data["precipitation_sum"][i], 2),
+            "weather_code": daily_data["weathercode"][i],
+            "weather_emoji": classify_weather(daily_data["weathercode"][i], None, daily_data["precipitation_sum"][i]),
+            "wind_speed": round(daily_data["windspeed_10m_max"][i], 1),
+            "wind_direction": deg_to_cardinal(daily_data["winddirection_10m_dominant"][i]),
+            "humidity": round(60 + (i * 2), 1),  # Mock humidity data
+            "pressure": round(1013 + (i * 0.5), 1),  # Mock pressure data
+            "sunrise": daily_data["sunrise"][i].split("T")[1][:5],
+            "sunset": daily_data["sunset"][i].split("T")[1][:5]
         })
 
     # Process hourly forecast data (next 16 hours)
-    current_hour = datetime.now().hour
+    current_time = dt.now()
+    current_hour = current_time.hour
     hourly_forecast = []
     sunset_hour = int(sunset.split(":")[0])
     sunrise_hour = int(sunrise.split(":")[0])
     
-    for i in range(min(16, len(times))):
-        hour_time = times[i]
+    # Find the current hour index in the times array
+    current_hour_index = None
+    for i, hour_time in enumerate(times):
+        if hour_time.hour == current_hour:
+            current_hour_index = i
+            break
+    
+    # If we can't find the current hour, start from the beginning
+    if current_hour_index is None:
+        current_hour_index = 0
+    
+    # Get the next 16 hours starting from current hour
+    # If we don't have enough hours in the current day, we'll get them from the next day
+    for i in range(16):
+        hour_index = current_hour_index + i
+        if hour_index >= len(times):
+            break
+            
+        hour_time = times[hour_index]
         is_night = hour_time.hour >= sunset_hour or hour_time.hour < sunrise_hour
         
         # Get weather emoji and modify for night if needed
-        weather_emoji = classify_weather(weather_codes[i], cloud_cover[i], rain_intensity[i])
+        weather_emoji = classify_weather(weather_codes[hour_index], cloud_cover[hour_index], rain_intensity[hour_index])
         if is_night and weather_emoji == "☀️":
             weather_emoji = "🌙"
         elif is_night and weather_emoji in ["🌤️", "⛅"]:
@@ -210,11 +253,12 @@ def get_todays_weather(lat: float = LAT, lon: float = LON) -> Dict[str, Any]:
         hourly_forecast.append({
             "time": hour_time.strftime("%H:%M"),
             "emoji": weather_emoji,
-            "rain_probability": round(rain_probs[i], 1),
-            "temperature": round(temps[i], 1),
-            "wind_speed": round(wind_speed[i], 1),
-            "wind_direction": deg_to_cardinal(wind_dir[i]),
-            "humidity": round(50 + (i * 2), 1)  # Mock humidity data
+            "rain_probability": round(rain_probs[hour_index], 1),
+            "temperature": round(temps[hour_index], 1),
+            "wind_speed": round(wind_speed[hour_index], 1),
+            "wind_direction": deg_to_cardinal(wind_dir[hour_index]),
+            "humidity": round(humidity[hour_index], 1),
+            "pressure": round(pressure[hour_index], 1)
         })
 
     return {

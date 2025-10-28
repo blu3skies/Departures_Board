@@ -234,10 +234,11 @@
                 <thead>
                   <tr>
                     <th>Hour</th>
-                    <th>Emoji</th>
+                    <th>Weather</th>
                     <th>Rain %</th>
                     <th>Temp</th>
                     <th>Wind</th>
+                    <th>Pressure</th>
                     <th>Humidity</th>
                   </tr>
                 </thead>
@@ -250,11 +251,12 @@
                         <td>{{ hour.rain_probability }}%</td>
                         <td>{{ hour.temperature }}°</td>
                         <td>{{ hour.wind_speed }} km/h {{ hour.wind_direction }}</td>
+                        <td>{{ hour.pressure }} mb</td>
                         <td>{{ hour.humidity }}%</td>
                       </tr>
                     {% endfor %}
                   {% else %}
-                    <tr><td colspan="6">Hourly forecast unavailable</td></tr>
+                    <tr><td colspan="7">Hourly forecast unavailable</td></tr>
                   {% endif %}
                 </tbody>
               </table>
@@ -268,10 +270,11 @@
                 <thead>
                   <tr>
                     <th>Date</th>
-                    <th>Emoji</th>
+                    <th>Weather</th>
                     <th>Rain %</th>
                     <th>High/Low</th>
                     <th>Wind</th>
+                    <th>Pressure</th>
                     <th>Humidity</th>
                   </tr>
                 </thead>
@@ -284,11 +287,12 @@
                         <td>{{ day.rain_probability }}%</td>
                         <td>{{ day.high_temp }}°/{{ day.low_temp }}°</td>
                         <td>{{ day.wind_speed }} km/h {{ day.wind_direction }}</td>
+                        <td>{{ day.pressure }} mb</td>
                         <td>{{ day.humidity }}%</td>
                       </tr>
                     {% endfor %}
                   {% else %}
-                    <tr><td colspan="6">Daily forecast unavailable</td></tr>
+                    <tr><td colspan="7">Daily forecast unavailable</td></tr>
                   {% endif %}
                 </tbody>
               </table>
