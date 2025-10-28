@@ -17,10 +17,12 @@ OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
 # ---------------------------------------------------------
 
 def deg_to_cardinal(deg: float) -> str:
-    """Convert degrees to compass direction."""
-    dirs = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+    """Convert degrees to compass direction with arrow."""
+    # Arrow symbols corresponding to 8 compass directions
+    # Arrows point in the direction the wind is blowing FROM
+    arrows = ["↓", "↙", "←", "↖", "↑", "↗", "→", "↘"]
     ix = round(deg / 45) % 8
-    return dirs[ix]
+    return arrows[ix]
 
 
 def _get_default_weather() -> Dict[str, Any]:
