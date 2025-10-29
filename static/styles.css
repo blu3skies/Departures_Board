@@ -273,7 +273,7 @@ body::after {
   white-space: nowrap; /* Prevent text wrapping for more compact layout */
 }
 .departures-table th { 
-  color: var(--teletext-white);
+  color: #ff69b4;
   text-align: left;
 }
 
@@ -299,7 +299,13 @@ body::after {
   padding: 1px 3px;
   border-bottom: none;
 }
-.bus-table th { color: var(--teletext-white); }
+.bus-table th { 
+  color: #ff69b4;
+  text-align: left;
+}
+.bus-table td:nth-child(2) {
+  color: var(--teletext-cyan);
+}
 
 /* Weather */
 .weather-grid {
