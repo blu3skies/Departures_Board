@@ -113,7 +113,7 @@ body::after {
 .tube-status-list { display: flex; flex-direction: column; gap: 2px; }
 .tube-row {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 200px 1fr auto;
   align-items: center;
   border-left: 6px solid var(--tube-color, var(--teletext-white));
   padding: 3px 6px;
@@ -144,13 +144,13 @@ body::after {
 /* Tube row elements */
 .tube-name {
   grid-column: 1;
-  min-width: 100px; /* Fixed width for line names */
 }
 
 .tube-status-text {
   grid-column: 2;
-  text-align: center;
-  justify-self: center; /* Center within the flexible space */
+  text-align: left;
+  justify-self: start;
+  padding-left: 20px;
 }
 
 .tube-reason-container {
@@ -161,21 +161,42 @@ body::after {
 
 /* "Good Service" summary */
 .tube-summary { 
-  border-left: none; 
-  display: flex; 
-  align-items: center; 
+  border-left: 6px solid transparent;
+  display: grid;
+  grid-template-columns: 10px 175px 1fr auto;
+  align-items: center;
   color: var(--teletext-green);
+  gap: 15px;
+  padding: 3px 6px;
 }
 
-.tube-summary .tube-status-text {
-  color: var(--teletext-green);
-}
 .tube-summary-swatches {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   gap: 2px;
   width: 10px;
   margin-right: 6px;
+  vertical-align: middle;
+  grid-column: 1;
+}
+
+.tube-summary > :nth-child(1) {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tube-summary .tube-name {
+  grid-column: 2;
+}
+
+.tube-summary .tube-status-text {
+  color: var(--teletext-green);
+  grid-column: 3;
+  text-align: left;
+  justify-self: start;
+  padding-left: 20px;
 }
 .tube-summary-swatches span {
   display: block;
