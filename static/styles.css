@@ -4,6 +4,32 @@
 
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
+/* Prevent layout shifts and zoom during page load */
+html {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  /* Prevent zoom on iOS */
+  touch-action: pan-x pan-y;
+  /* Prevent layout shifts */
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Disable transitions during initial load */
+body.loading *,
+body.loading *::before,
+body.loading *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
 /* Style Toggle Button */
 .style-toggle-container {
   position: fixed;
@@ -116,6 +142,8 @@ body::after {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  contain: layout style paint;
+  will-change: contents;
 }
 
 .layout {
@@ -124,6 +152,7 @@ body::after {
   grid-template-rows: auto 1fr auto;
   gap: 6px;
   padding: 6px;
+  contain: layout;
 }
 
 /* Panels */
@@ -132,6 +161,8 @@ body::after {
   padding: 6px 10px;
   background: var(--teletext-black);
   color: var(--teletext-white);
+  contain: layout style;
+  min-height: 0;
 }
 
 .tube-panel { grid-column: 1; grid-row: 1; }
@@ -356,6 +387,7 @@ body::after {
 }
 
 /* Platform headings (cyan) */
+.departures-table td.platform-header,
 .departures-table td[colspan="4"] {
   color: var(--teletext-cyan);
   font-weight: bold;

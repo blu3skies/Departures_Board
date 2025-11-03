@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no" />
   <title>{{ station }} Board</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" id="main-stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='styles-experimental.css') }}" id="experimental-stylesheet" disabled />
@@ -86,7 +86,7 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td colspan="4" style="color: var(--teletext-cyan); font-weight: bold; border-bottom: 1px solid var(--teletext-white); background: #000;">
+                      <td colspan="4" class="platform-header">
                         Platform {{ platform }}
                       </td>
                     </tr>

@@ -4,6 +4,32 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=VT323&display=swap');
 
+/* Prevent layout shifts and zoom during page load */
+html {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  /* Prevent zoom on iOS */
+  touch-action: pan-x pan-y;
+  /* Prevent layout shifts */
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Disable transitions during initial load */
+body.loading *,
+body.loading *::before,
+body.loading *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
 /* Style Toggle Button - Glass Version */
 .style-toggle-container {
   position: fixed;
@@ -114,6 +140,8 @@ body::after {
   height: 100vh;
   overflow: hidden;
   padding: 8px;
+  contain: layout style paint;
+  will-change: contents;
 }
 
 .layout {
@@ -124,6 +152,7 @@ body::after {
   padding: 0;
   height: calc(100vh - 120px);
   flex: 1;
+  contain: layout;
 }
 
 /* Liquid Glass Panels */
@@ -138,6 +167,8 @@ body::after {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
               inset 0 1px 0 rgba(255, 255, 255, 0.15);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  contain: layout style;
+  min-height: 0;
   overflow-y: auto;
 }
 
@@ -384,7 +415,8 @@ body::after {
 
 .departures-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 4px;
   color: var(--text-primary);
   table-layout: auto; /* Dynamic column sizing */
 }
@@ -416,11 +448,22 @@ body::after {
   letter-spacing: 0.5px;
 }
 
+.departures-table td.platform-header,
 .departures-table td[colspan="4"] {
-  color: var(--accent-cyan);
+  color: var(--text-primary);
   font-weight: 600;
-  border-bottom: 1px solid rgba(50, 215, 75, 0.3);
-  padding: 8px;
+  background: rgba(25, 25, 35, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+  display: table-cell;
 }
 
 .time.late, .status.late { 
