@@ -4,6 +4,70 @@
 
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
+/* Style Toggle Button */
+.style-toggle-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.style-toggle-btn {
+  background: var(--teletext-black);
+  border: 2px solid var(--teletext-white);
+  color: var(--teletext-white);
+  padding: 8px 16px;
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 24px;
+}
+
+.style-toggle-btn:hover {
+  background: var(--teletext-blue);
+  border-color: var(--teletext-cyan);
+  color: var(--teletext-cyan);
+}
+
+.toggle-label {
+  font-size: 16px;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: var(--teletext-white);
+  border-radius: 50%;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.active {
+  background: var(--teletext-green);
+}
+
+.toggle-switch.active .toggle-slider {
+  transform: translateX(24px);
+  background: var(--teletext-white);
+}
+
 :root {
   --teletext-black: #000000;
   --teletext-blue: #0000aa;
@@ -247,28 +311,42 @@ body::after {
   overflow-x: auto; /* Allow horizontal scrolling on mobile */
 }
 
-.departures-table {
-  width: 100%;
-  min-width: 500px; /* Reduced minimum width for more compact layout */
-  border-collapse: collapse;
-  color: var(--teletext-white);
-  table-layout: fixed; /* Allow better control over column widths */
+.departures-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 
-/* Optimize column widths for better space utilization */
+@media (max-width: 1200px) {
+  .departures-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.platform-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.departures-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--teletext-white);
+  table-layout: auto; /* Dynamic column sizing */
+}
+
+/* Dynamic column widths - auto-sizing */
 .departures-table th:nth-child(1),
-.departures-table td:nth-child(1) { width: 12%; } /* Time column */
+.departures-table td:nth-child(1) { width: auto; min-width: 50px; } /* Time column */
 .departures-table th:nth-child(2),
-.departures-table td:nth-child(2) { width: 35%; } /* Destination column */
+.departures-table td:nth-child(2) { width: auto; min-width: 120px; } /* Destination column (now includes operator) */
 .departures-table th:nth-child(3),
-.departures-table td:nth-child(3) { width: 8%; } /* Platform column */
+.departures-table td:nth-child(3) { width: auto; min-width: 35px; } /* Platform column */
 .departures-table th:nth-child(4),
-.departures-table td:nth-child(4) { width: 30%; } /* Status column */
-.departures-table th:nth-child(5),
-.departures-table td:nth-child(5) { width: 15%; } /* Operator column */
+.departures-table td:nth-child(4) { width: auto; min-width: 80px; } /* Status column */
 .departures-table th,
 .departures-table td {
-  padding: 0px 1px;
+  padding: 0px 4px;
   border-bottom: none;
   white-space: nowrap; /* Prevent text wrapping for more compact layout */
 }
@@ -278,7 +356,7 @@ body::after {
 }
 
 /* Platform headings (cyan) */
-.departures-table td[colspan="5"] {
+.departures-table td[colspan="4"] {
   color: var(--teletext-cyan);
   font-weight: bold;
   border-bottom: 1px solid var(--teletext-cyan);
@@ -312,6 +390,7 @@ body::after {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 4px;
+  margin-bottom: 8px;
 }
 
 .weather-seg {

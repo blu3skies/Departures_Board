@@ -4,11 +4,22 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>{{ station }} Board</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" id="main-stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles-experimental.css') }}" id="experimental-stylesheet" disabled />
   <script src="{{ url_for('static', filename='app.js') }}"></script>
 </head>
 <body>
   <div class="screen">
+    <!-- STYLE TOGGLE BUTTON -->
+    <div class="style-toggle-container">
+      <button type="button" class="style-toggle-btn" id="styleToggle">
+        <span class="toggle-label">Experimental</span>
+        <span class="toggle-switch">
+          <span class="toggle-slider"></span>
+        </span>
+      </button>
+    </div>
+    
     <!-- HEADER BAR -->
     <div class="header">
       <div class="title">London Home Travel Board</div>
@@ -61,58 +72,61 @@
         <div class="panel-title">Upcoming departures for Herne Hill</div>
 
         {% if trains %}
-          <table class="departures-table">
-            <thead>
-              <tr>
-                <th>Time</th>
-                <th>Destination</th>
-                <th>Plat</th>
-                <th>Status</th>
-                <th>Operator</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for platform, rows in trains.items() %}
-                <tr>
-                  <td colspan="5" style="color: var(--teletext-cyan); font-weight: bold; border-bottom: 1px solid var(--teletext-white); background: #000;">
-                    Platform {{ platform }}
-                  </td>
-                </tr>
-                {% for t in rows %}
-                  {% set is_late = (t.get('etd','')|lower) not in ['on time','due',''] %}
-                  {% set etd_text = t.get('etd','') %}
-                  {% set due_text = t.get('due_in_text','') %}
-                  <tr>
-                    {% if t is mapping %}
-                      <td class="time {% if is_late %}late{% else %}ontime{% endif %}">
-                        {{ t.get('std') or t.get('time') or '' }}
+          <div class="departures-grid">
+            {% for platform, rows in trains.items() %}
+              <div class="platform-section">
+                <table class="departures-table">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Destination</th>
+                      <th>Plat</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="4" style="color: var(--teletext-cyan); font-weight: bold; border-bottom: 1px solid var(--teletext-white); background: #000;">
+                        Platform {{ platform }}
                       </td>
-                      <td>{{ t.get('destination') or t.get('dest') or 'Unknown' }}</td>
-                      <td>{{ t.get('platform') or '-' }}</td>
-                      <td class="status {% if is_late %}late{% else %}ontime{% endif %}">
-                        {% if etd_text|lower == 'cancelled' %}
-                          Cancelled
+                    </tr>
+                    {% for t in rows %}
+                      {% set is_late = (t.get('etd','')|lower) not in ['on time','due',''] %}
+                      {% set etd_text = t.get('etd','') %}
+                      {% set due_text = t.get('due_in_text','') %}
+                      {% set operator_code = t.get('operatorCode') or '' %}
+                      {% set destination = t.get('destination') or t.get('dest') or 'Unknown' %}
+                      <tr>
+                        {% if t is mapping %}
+                          <td class="time {% if is_late %}late{% else %}ontime{% endif %}">
+                            {{ t.get('std') or t.get('time') or '' }}
+                          </td>
+                          <td>
+                            {{ destination }}{% if operator_code %} ({{ operator_code }}){% endif %}
+                          </td>
+                          <td>{{ t.get('platform') or '-' }}</td>
+                          <td class="status {% if is_late %}late{% else %}ontime{% endif %}">
+                            {% if etd_text|lower == 'cancelled' %}
+                              Cancelled
+                            {% else %}
+                              {{ etd_text or 'On time' }}
+                              {% if due_text == 'Due' %}
+                                (Due)
+                              {% elif t.get('due_in_mins') %}
+                                ({{ t.get('due_in_mins') }} min{{ 's' if t.get('due_in_mins') > 1 else '' }})
+                              {% endif %}
+                            {% endif %}
+                          </td>
                         {% else %}
-                          {{ etd_text or 'On time' }}
-                          {% if due_text == 'Due' %}
-                            (Due)
-                          {% elif t.get('due_in_mins') %}
-                            ({{ t.get('due_in_mins') }} min{{ 's' if t.get('due_in_mins') > 1 else '' }})
-                          {% endif %}
+                          <td colspan="4">{{ t }}</td>
                         {% endif %}
-                      </td>
-                      <td>
-                        {{ t.get('operator') or t.get('operatorName') or '' }}
-                        {% if t.get('operatorCode') %} ({{ t.get('operatorCode') }}){% endif %}
-                      </td>
-                    {% else %}
-                      <td colspan="5">{{ t }}</td>
-                    {% endif %}
-                  </tr>
-                {% endfor %}
-              {% endfor %}
-            </tbody>
-          </table>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% endfor %}
+          </div>
         {% else %}
           <div class="muted">No train departures available</div>
         {% endif %}

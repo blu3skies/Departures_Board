@@ -69,3 +69,46 @@ document.addEventListener("keydown", function (e) {
     }
   }
 });
+
+// Style toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const mainStylesheet = document.getElementById('main-stylesheet');
+  const experimentalStylesheet = document.getElementById('experimental-stylesheet');
+  const styleToggle = document.getElementById('styleToggle');
+  const toggleSwitch = document.querySelector('.toggle-switch');
+  
+  if (!mainStylesheet || !experimentalStylesheet) {
+    console.error('Stylesheets not found');
+    return;
+  }
+  
+  // Check localStorage for saved preference
+  const useExperimental = localStorage.getItem('useExperimentalStyle') === 'true';
+  
+  // Initialize styles based on preference
+  function setStyle(useExperimental) {
+    if (useExperimental) {
+      mainStylesheet.disabled = true;
+      experimentalStylesheet.disabled = false;
+      if (toggleSwitch) toggleSwitch.classList.add('active');
+    } else {
+      mainStylesheet.disabled = false;
+      experimentalStylesheet.disabled = true;
+      if (toggleSwitch) toggleSwitch.classList.remove('active');
+    }
+    localStorage.setItem('useExperimentalStyle', useExperimental);
+  }
+  
+  // Set initial style
+  setStyle(useExperimental);
+  
+  // Toggle on button click
+  if (styleToggle) {
+    styleToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const currentlyExperimental = experimentalStylesheet.disabled === false;
+      setStyle(!currentlyExperimental);
+    });
+  }
+});
