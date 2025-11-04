@@ -79,23 +79,38 @@ setTimeout(() => {
   location.replace(location.href);
 }, 60000);
 
-// Handle tube "Show details" popups
+// Handle tube "Show details" modal
 document.addEventListener("click", function (e) {
+  const modal = document.getElementById("tubeModal");
   const buttons = document.querySelectorAll(".reason-toggle");
-  buttons.forEach(btn => {
-    const popup = btn.nextElementSibling;
-    if (!popup) return;
+  const closeBtn = document.querySelector(".tube-modal-close");
+  const modalTitle = document.getElementById("tubeModalTitle");
+  const modalReason = document.getElementById("tubeModalReason");
 
+  // Open modal when "Show details" button is clicked
+  buttons.forEach(btn => {
     if (btn.contains(e.target)) {
-      // Toggle the clicked popup
-      const isActive = popup.classList.toggle("active");
-      btn.textContent = isActive ? "Hide details" : "Show details";
-    } else if (!popup.contains(e.target)) {
-      // Close other popups
-      popup.classList.remove("active");
-      btn.textContent = "Show details";
+      const tubeName = btn.getAttribute("data-tube-name");
+      const reason = btn.getAttribute("data-reason");
+      
+      if (modalTitle && modalReason) {
+        modalTitle.textContent = tubeName + " - Details";
+        modalReason.textContent = reason;
+      }
+      
+      modal.classList.add("active");
     }
   });
+
+  // Close modal when close button is clicked
+  if (closeBtn && closeBtn.contains(e.target)) {
+    modal.classList.remove("active");
+  }
+
+  // Close modal when clicking outside the modal content
+  if (modal && modal.contains(e.target) && !modal.querySelector(".tube-modal-content").contains(e.target)) {
+    modal.classList.remove("active");
+  }
 });
 
 // Handle weather modal functionality  
@@ -141,9 +156,15 @@ document.addEventListener("click", function (e) {
 // Close modal with Escape key
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
-    const modal = document.getElementById("weatherModal");
-    if (modal && modal.classList.contains("active")) {
-      modal.classList.remove("active");
+    const weatherModal = document.getElementById("weatherModal");
+    const tubeModal = document.getElementById("tubeModal");
+    
+    if (weatherModal && weatherModal.classList.contains("active")) {
+      weatherModal.classList.remove("active");
+    }
+    
+    if (tubeModal && tubeModal.classList.contains("active")) {
+      tubeModal.classList.remove("active");
     }
   }
 });

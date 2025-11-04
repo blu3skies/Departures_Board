@@ -41,8 +41,7 @@
 
                 {% if t.reason %}
                 <div class="tube-reason-container">
-                  <button type="button" class="reason-toggle">Show details</button>
-                  <div class="tube-reason-popup">{{ t.reason }}</div>
+                  <button type="button" class="reason-toggle" data-tube-name="{{ t.name }}" data-reason="{{ t.reason|e }}">Show details</button>
                 </div>
                 {% endif %}
               </div>
@@ -312,6 +311,19 @@
               </table>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TUBE DETAILS MODAL -->
+    <div class="tube-modal" id="tubeModal">
+      <div class="tube-modal-content">
+        <div class="tube-modal-header">
+          <h2 id="tubeModalTitle">Tube Line Details</h2>
+          <button type="button" class="tube-modal-close">&times;</button>
+        </div>
+        <div class="tube-modal-body">
+          <div id="tubeModalReason"></div>
         </div>
       </div>
     </div>
