@@ -225,14 +225,20 @@ body::after {
 
 /* Panel titles */
 .panel-title {
-  text-transform: uppercase;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 8px;
-  padding-bottom: 6px;
-  font-weight: 600;
   color: var(--text-primary);
-  font-size: 13px;
-  letter-spacing: 0.5px;
+  font-weight: 600;
+  background: rgba(25, 25, 35, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+  text-align: left;
 }
 
 /* Tube rows - Glass Style */
@@ -584,6 +590,7 @@ body::after {
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 6px;
   margin-bottom: 8px;
+  justify-content: center;
 }
 
 .weather-seg {
@@ -640,6 +647,27 @@ body::after {
   background: rgba(50, 50, 70, 0.8);
   border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-1px);
+}
+
+/* Weather footer summary */
+.weather-panel .muted {
+  text-align: center;
+  margin-top: 8px;
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+.weather-panel .muted span.high {
+  color: #ff9933; /* Orange */
+}
+
+.weather-panel .muted span.low {
+  color: #66ccff; /* Light blue */
+}
+
+.weather-details-button {
+  margin-top: 8px;
+  text-align: center;
 }
 
 /* Weather Modal - Glass Style */

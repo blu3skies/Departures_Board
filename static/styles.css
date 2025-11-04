@@ -196,12 +196,12 @@ body::after {
 
 /* Panel titles */
 .panel-title {
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--teletext-white);
+  color: var(--teletext-cyan);
+  font-weight: bold;
+  border-bottom: 1px solid var(--teletext-cyan);
   margin-bottom: 4px;
   padding-bottom: 2px;
-  font-weight: bold;
-  color: var(--teletext-purple);
+  text-transform: none;
 }
 
 /* Tube rows */
@@ -492,6 +492,7 @@ body::after {
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 4px;
   margin-bottom: 8px;
+  justify-content: center;
 }
 
 .weather-seg {
@@ -565,12 +566,6 @@ body::after {
 }
 
 /* Title colours – all purple now */
-.tube-panel .panel-title,
-.bus-panel .panel-title,
-.train-panel .panel-title,
-.weather-panel .panel-title {
-  color: var(--teletext-purple);
-}
 
 /* Responsive tweaks */
 @media (max-width: 1200px) {
