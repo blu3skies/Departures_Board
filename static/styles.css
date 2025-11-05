@@ -45,13 +45,13 @@ body.loading *::after {
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
   background-attachment: fixed;
   color: var(--text-primary);
   margin: 0;
   padding: 0;
-  line-height: 1.35;
+  line-height: 1.4;
   min-height: 100vh;
   height: 100vh;
   overflow: hidden;
@@ -69,7 +69,7 @@ body::after {
   min-height: 100vh;
   height: 100vh;
   overflow: hidden;
-  padding: 4px;
+  padding: 6px;
   contain: layout style paint;
   will-change: contents;
 }
@@ -78,7 +78,7 @@ body::after {
   display: grid;
   grid-template-columns: 1fr 2fr;
   grid-template-rows: auto 1fr auto;
-  gap: 4px;
+  gap: 6px;
   padding: 0;
   height: calc(100vh - 60px);
   flex: 1;
@@ -92,7 +92,7 @@ body::after {
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
-  padding: 6px 10px;
+  padding: 8px 12px;
   color: var(--text-primary);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4),
               inset 0 1px 0 rgba(255, 255, 255, 0.15);
@@ -118,10 +118,10 @@ body::after {
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
-  padding: 4px 10px;
-  margin-bottom: 4px;
+  padding: 6px 12px;
+  margin-bottom: 6px;
   color: var(--text-primary);
-  font-size: 13px;
+  font-size: 14px;
   position: relative;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   flex-shrink: 0;
@@ -143,7 +143,7 @@ body::after {
 }
 .panel-updated { 
   color: var(--text-secondary);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 /* Panel titles */
@@ -155,10 +155,10 @@ body::after {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
-  padding: 4px 8px;
-  margin-bottom: 4px;
+  padding: 5px 10px;
+  margin-bottom: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  font-size: 13px;
+  font-size: 14px;
   text-transform: none;
   letter-spacing: 0;
   text-align: left;
@@ -168,7 +168,7 @@ body::after {
 .tube-status-list { 
   display: flex; 
   flex-direction: column; 
-  gap: 2px;
+  gap: 3px;
   overflow: visible; 
 }
 
@@ -177,15 +177,15 @@ body::after {
   grid-template-columns: 120px 1fr auto;
   align-items: center;
   border-left: 4px solid var(--tube-color, rgba(255, 255, 255, 0.4));
-  padding: 3px 6px;
+  padding: 4px 8px;
   background: rgba(25, 25, 35, 0.5);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 8px;
   color: var(--text-primary);
-  gap: 6px;
+  gap: 8px;
   transition: all 0.2s;
-  font-size: 12px;
+  font-size: 13px;
   position: relative;
   z-index: 1;
 }
@@ -241,13 +241,13 @@ body::after {
   grid-template-columns: 20px 100px 1fr auto; /* Increased first column for swatches */
   align-items: center;
   color: var(--accent-cyan);
-  gap: 6px;
-  padding: 3px 6px;
+  gap: 8px;
+  padding: 4px 8px;
   background: rgba(25, 25, 35, 0.5);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 13px;
   position: relative;
   z-index: 1;
   min-height: 30px; /* Ensure enough height for two rows of swatches */
@@ -297,11 +297,11 @@ body::after {
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--text-primary);
-  padding: 2px 6px;
+  padding: 3px 8px;
   cursor: pointer;
   font-family: inherit;
-  font-size: 11px;
-  margin-left: 6px;
+  font-size: 12px;
+  margin-left: 8px;
   border-radius: 6px;
   transition: all 0.2s;
 }
@@ -406,7 +406,7 @@ body::after {
 .departures-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4px;
+  gap: 6px;
 }
 
 @media (max-width: 1200px) {
@@ -440,18 +440,18 @@ body::after {
 
 .departures-table th,
 .departures-table td {
-  padding: 2px 3px;
+  padding: 3px 5px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   white-space: nowrap;
-  font-size: 12px;
-  line-height: 1.25;
+  font-size: 13px;
+  line-height: 1.3;
 }
 
 .departures-table th { 
   color: rgba(255, 255, 255, 0.7);
   text-align: left;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }
@@ -465,10 +465,10 @@ body::after {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
-  padding: 3px 6px;
+  padding: 4px 8px;
   margin: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  font-size: 12px;
+  font-size: 13px;
   text-transform: none;
   letter-spacing: 0;
   display: table-cell;
@@ -492,17 +492,17 @@ body::after {
 
 .bus-table th,
 .bus-table td {
-  padding: 2px 4px;
+  padding: 3px 6px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 12px;
-  line-height: 1.25;
+  font-size: 13px;
+  line-height: 1.3;
 }
 
 .bus-table th { 
   color: rgba(255, 255, 255, 0.7);
   text-align: left;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }
@@ -515,16 +515,16 @@ body::after {
 .weather-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 3px;
-  margin-bottom: 4px;
+  gap: 4px;
+  margin-bottom: 6px;
   justify-content: center;
 }
 
 .weather-seg {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 6px;
+  gap: 6px;
+  padding: 5px 8px;
   background: rgba(25, 25, 35, 0.5);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -535,20 +535,20 @@ body::after {
 
 
 .seg-icon {
-  font-size: 22px;
+  font-size: 24px;
 }
 
 .seg-title {
   font-weight: 600;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-primary);
-  margin-bottom: 1px;
+  margin-bottom: 2px;
 }
 
 .seg-line {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-secondary);
-  line-height: 1.25;
+  line-height: 1.3;
 }
 
 .weather-more-details-btn {
@@ -557,24 +557,24 @@ body::after {
   -webkit-backdrop-filter: blur(20px);
   color: var(--text-primary);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 4px 10px;
+  padding: 5px 12px;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s;
   border-radius: 8px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 
 /* Weather footer summary */
 .weather-panel .muted {
   text-align: center;
-  margin-top: 4px;
+  margin-top: 6px;
   color: var(--text-primary);
-  font-size: 12px;
-  line-height: 1.35;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .weather-panel .muted span.high {
@@ -586,7 +586,7 @@ body::after {
 }
 
 .weather-details-button {
-  margin-top: 4px;
+  margin-top: 6px;
   text-align: center;
 }
 
@@ -792,10 +792,10 @@ body::after {
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
-  padding: 3px 10px;
-  margin-top: 4px;
+  padding: 4px 12px;
+  margin-top: 6px;
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: 13px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   flex-shrink: 0;
 }
