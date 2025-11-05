@@ -4,22 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no" />
   <title>{{ station }} Board</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" id="main-stylesheet" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles-experimental.css') }}" id="experimental-stylesheet" disabled />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
   <script src="{{ url_for('static', filename='app.js') }}"></script>
 </head>
 <body>
   <div class="screen">
-    <!-- STYLE TOGGLE BUTTON -->
-    <div class="style-toggle-container">
-      <button type="button" class="style-toggle-btn" id="styleToggle">
-        <span class="toggle-label">Experimental</span>
-        <span class="toggle-switch">
-          <span class="toggle-slider"></span>
-        </span>
-      </button>
-    </div>
-    
     <!-- HEADER BAR -->
     <div class="header">
       <div class="title">London Home Travel Board</div>

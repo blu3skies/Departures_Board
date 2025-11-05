@@ -1,8 +1,8 @@
 /* ===========================
-   TELEtext-Style Dashboard (Refined)
+   iOS 18 Liquid Glass Design
    =========================== */
 
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=VT323&display=swap');
 
 /* Prevent layout shifts and zoom during page load */
 html {
@@ -30,111 +30,36 @@ body.loading *::after {
   animation: none !important;
 }
 
-/* Style Toggle Button */
-.style-toggle-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-}
-
-.style-toggle-btn {
-  background: var(--teletext-black);
-  border: 2px solid var(--teletext-white);
-  color: var(--teletext-white);
-  padding: 8px 16px;
-  font-family: 'VT323', monospace;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-radius: 24px;
-}
-
-.style-toggle-btn:hover {
-  background: var(--teletext-blue);
-  border-color: var(--teletext-cyan);
-  color: var(--teletext-cyan);
-}
-
-.toggle-label {
-  font-size: 16px;
-}
-
-.toggle-switch {
-  position: relative;
-  width: 48px;
-  height: 24px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  transition: all 0.3s;
-  cursor: pointer;
-}
-
-.toggle-slider {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 20px;
-  height: 20px;
-  background: var(--teletext-white);
-  border-radius: 50%;
-  transition: all 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.toggle-switch.active {
-  background: var(--teletext-green);
-}
-
-.toggle-switch.active .toggle-slider {
-  transform: translateX(24px);
-  background: var(--teletext-white);
-}
-
 :root {
-  --teletext-black: #000000;
-  --teletext-blue: #0000aa;
-  --teletext-red: #ff4444;
-  --teletext-green: #00ff66;
-  --teletext-yellow: #ffff66;
-  --teletext-white: #ffffff;
-  --teletext-grey: #999999;
-  --teletext-purple: #b366ff;
-  --teletext-cyan: #00ffff;
-  --teletext-orange: #ff9933;
-  --teletext-lightblue: #66ccff;
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-hover: rgba(255, 255, 255, 0.12);
+  --text-primary: rgba(255, 255, 255, 0.98);
+  --text-secondary: rgba(255, 255, 255, 0.75);
+  --accent-blue: #5a9eff;
+  --accent-cyan: #4ddb6a;
+  --accent-red: #ff5a5a;
+  --accent-purple: #c77dff;
+  --accent-yellow: #ffd700;
 }
 
 body {
-  font-family: 'VT323', monospace;
-  font-size: 20px;
-  background: var(--teletext-black);
-  color: var(--teletext-white);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+  background-attachment: fixed;
+  color: var(--text-primary);
   margin: 0;
   padding: 0;
-  line-height: 1.4;
+  line-height: 1.35;
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* CRT-style scanlines */
+/* Remove CRT scanlines for modern look */
 body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    rgba(255, 255, 255, 0.03) 0px,
-    rgba(255, 255, 255, 0.03) 1px,
-    transparent 2px,
-    transparent 3px
-  );
-  opacity: 0.1;
-  z-index: 999;
+  display: none;
 }
 
 /* Layout grid */
@@ -142,6 +67,9 @@ body::after {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  padding: 4px;
   contain: layout style paint;
   will-change: contents;
 }
@@ -150,37 +78,53 @@ body::after {
   display: grid;
   grid-template-columns: 1fr 2fr;
   grid-template-rows: auto 1fr auto;
-  gap: 6px;
-  padding: 6px;
+  gap: 4px;
+  padding: 0;
+  height: calc(100vh - 60px);
+  flex: 1;
   contain: layout;
 }
 
-/* Panels */
+/* Liquid Glass Panels */
 .panel {
-  border: 1px solid var(--teletext-white);
+  background: rgba(20, 20, 30, 0.6);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
   padding: 6px 10px;
-  background: var(--teletext-black);
-  color: var(--teletext-white);
+  color: var(--text-primary);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   contain: layout style;
   min-height: 0;
+  overflow-y: auto;
 }
+
 
 .tube-panel { grid-column: 1; grid-row: 1; }
 .bus-panel { grid-column: 1; grid-row: 2; }
 .weather-panel { grid-column: 1 / span 2; grid-row: 3; }
 .train-panel { grid-column: 2; grid-row: 1 / span 2; }
 
-/* Header */
+/* Header - Glass Version */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--teletext-blue);
-  color: var(--teletext-white);
-  padding: 4px 8px;
-  border-bottom: 2px solid var(--teletext-white);
-  font-size: 22px;
+  background: rgba(15, 15, 25, 0.7);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 4px 10px;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+  font-size: 13px;
   position: relative;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
 }
 
 .header-center {
@@ -188,71 +132,101 @@ body::after {
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
-  color: var(--teletext-white);
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
-.title { text-transform: uppercase; letter-spacing: 1px; }
-.panel-updated { color: var(--teletext-white); }
+.title { 
+  text-transform: uppercase; 
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+.panel-updated { 
+  color: var(--text-secondary);
+  font-size: 11px;
+}
 
 /* Panel titles */
 .panel-title {
-  color: var(--teletext-cyan);
-  font-weight: bold;
-  border-bottom: 1px solid var(--teletext-cyan);
+  color: var(--text-primary);
+  font-weight: 600;
+  background: rgba(25, 25, 35, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 4px 8px;
   margin-bottom: 4px;
-  padding-bottom: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 13px;
   text-transform: none;
+  letter-spacing: 0;
+  text-align: left;
 }
 
-/* Tube rows */
+/* Tube rows - Glass Style */
 .tube-status-list { 
   display: flex; 
   flex-direction: column; 
-  gap: 2px; 
-  overflow: visible;
+  gap: 2px;
+  overflow: visible; 
 }
+
 .tube-row {
   display: grid;
-  grid-template-columns: 200px 1fr auto;
+  grid-template-columns: 120px 1fr auto;
   align-items: center;
-  border-left: 6px solid var(--tube-color, var(--teletext-white));
+  border-left: 4px solid var(--tube-color, rgba(255, 255, 255, 0.4));
   padding: 3px 6px;
-  background: #000;
-  color: var(--teletext-white);
-  gap: 15px;
+  background: rgba(25, 25, 35, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 8px;
+  color: var(--text-primary);
+  gap: 6px;
+  transition: all 0.2s;
+  font-size: 12px;
   position: relative;
   z-index: 1;
 }
-.tube-row.major { color: var(--teletext-red); }
-.tube-row.warn { color: var(--teletext-yellow); }
-.tube-row.good { color: var(--teletext-green); }
 
-/* Severity-specific styling for tube names and status text */
+
+.tube-row.major { 
+  background: rgba(255, 59, 48, 0.1);
+}
+.tube-row.warn { 
+  background: rgba(255, 204, 0, 0.1);
+}
+.tube-row.good { 
+  background: rgba(50, 215, 75, 0.1);
+}
+
 .tube-row.major .tube-name,
 .tube-row.major .tube-status-text {
-  color: var(--teletext-red);
+  color: var(--accent-red);
 }
 
 .tube-row.warn .tube-name,
 .tube-row.warn .tube-status-text {
-  color: var(--teletext-yellow);
+  color: var(--accent-yellow);
 }
 
 .tube-row.good .tube-name,
 .tube-row.good .tube-status-text {
-  color: var(--teletext-green);
+  color: var(--accent-cyan);
 }
 
-/* Tube row elements */
 .tube-name {
   grid-column: 1;
+  font-weight: 600;
 }
 
 .tube-status-text {
   grid-column: 2;
   text-align: left;
   justify-self: start;
-  padding-left: 20px;
+  padding-left: 15px;
+  color: var(--text-primary);
 }
 
 .tube-reason-container {
@@ -261,25 +235,41 @@ body::after {
   justify-content: flex-end;
 }
 
-/* "Good Service" summary */
 .tube-summary { 
-  border-left: 6px solid transparent;
+  border-left: 3px solid transparent;
   display: grid;
-  grid-template-columns: 10px 175px 1fr auto;
+  grid-template-columns: 20px 100px 1fr auto; /* Increased first column for swatches */
   align-items: center;
-  color: var(--teletext-green);
-  gap: 15px;
+  color: var(--accent-cyan);
+  gap: 6px;
   padding: 3px 6px;
+  background: rgba(25, 25, 35, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 8px;
+  font-size: 12px;
+  position: relative;
+  z-index: 1;
+  min-height: 30px; /* Ensure enough height for two rows of swatches */
 }
 
 .tube-summary-swatches {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
-  gap: 2px;
-  width: 10px;
-  margin-right: 6px;
-  vertical-align: middle;
+  flex-wrap: wrap;
+  gap: 1px;
+  width: 20px; /* Wide enough for two columns */
+  max-height: 30px; /* Allow two rows */
+  margin-right: 4px;
   grid-column: 1;
+  align-content: flex-start;
+}
+
+.tube-summary-swatches span {
+  display: block;
+  height: 4px;
+  width: 8px;
+  flex-shrink: 0;
 }
 
 .tube-summary > :nth-child(1) {
@@ -294,37 +284,31 @@ body::after {
 }
 
 .tube-summary .tube-status-text {
-  color: var(--teletext-green);
+  color: var(--accent-cyan);
   grid-column: 3;
   text-align: left;
   justify-self: start;
-  padding-left: 20px;
-}
-.tube-summary-swatches span {
-  display: block;
-  height: 5px;
-  background: var(--teletext-white);
+  padding-left: 15px;
 }
 
-/* Buttons */
 .reason-toggle {
-  background: var(--teletext-black);
-  border: 1px solid var(--teletext-white);
-  color: var(--teletext-white);
+  background: rgba(40, 40, 60, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
   padding: 2px 6px;
   cursor: pointer;
   font-family: inherit;
-  font-size: 16px;
-  margin-left: 10px;
-}
-.reason-toggle:hover {
-  background: var(--teletext-white);
-  color: var(--teletext-black);
+  font-size: 11px;
+  margin-left: 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
 }
 
-/* Tube "Show details" popup */
+
 .tube-reason-container { 
-  position: relative; 
+  position: relative;
   z-index: 1;
   overflow: visible;
 }
@@ -338,8 +322,9 @@ body::after {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .tube-modal.active {
@@ -349,37 +334,45 @@ body::after {
 }
 
 .tube-modal-content {
-  background: var(--teletext-black);
-  border: 2px solid var(--teletext-white);
+  background: rgba(15, 15, 25, 0.95);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
   width: 90%;
   max-width: 800px;
   max-height: 80vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 16px 64px rgba(0, 0, 0, 0.9);
 }
 
 .tube-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background: var(--teletext-blue);
-  border-bottom: 1px solid var(--teletext-white);
+  padding: 16px 20px;
+  background: rgba(30, 30, 45, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px 16px 0 0;
 }
 
 .tube-modal-header h2 {
   margin: 0;
-  color: var(--teletext-white);
-  font-size: 24px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  color: var(--text-primary);
+  font-size: 22px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .tube-modal-close {
   background: none;
   border: none;
-  color: var(--teletext-white);
+  color: var(--text-primary);
   font-size: 28px;
   cursor: pointer;
   padding: 0;
@@ -390,31 +383,30 @@ body::after {
   justify-content: center;
   line-height: 1;
   transition: color 0.2s;
+  border-radius: 8px;
 }
 
-.tube-modal-close:hover {
-  color: var(--teletext-red);
-}
 
 .tube-modal-body {
-  padding: 20px;
+  padding: 24px;
   overflow-y: auto;
-  color: var(--teletext-white);
+  color: var(--text-primary);
   white-space: pre-wrap;
   text-align: left;
   overflow-wrap: break-word;
-  line-height: 1.6;
+  line-height: 1.8;
+  font-size: 15px;
 }
 
-/* Train Departures */
+/* Train Departures - Glass Style */
 .train-panel {
-  overflow-x: auto; /* Allow horizontal scrolling on mobile */
+  overflow-x: auto;
 }
 
 .departures-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 4px;
 }
 
 @media (max-width: 1200px) {
@@ -430,8 +422,9 @@ body::after {
 
 .departures-table {
   width: 100%;
-  border-collapse: collapse;
-  color: var(--teletext-white);
+  border-collapse: separate;
+  border-spacing: 0 2px;
+  color: var(--text-primary);
   table-layout: auto; /* Dynamic column sizing */
 }
 
@@ -444,238 +437,160 @@ body::after {
 .departures-table td:nth-child(3) { width: auto; min-width: 35px; } /* Platform column */
 .departures-table th:nth-child(4),
 .departures-table td:nth-child(4) { width: auto; min-width: 80px; } /* Status column */
+
 .departures-table th,
 .departures-table td {
-  padding: 0px 4px;
-  border-bottom: none;
-  white-space: nowrap; /* Prevent text wrapping for more compact layout */
-}
-.departures-table th { 
-  color: var(--teletext-white);
-  text-align: left;
+  padding: 2px 3px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1.25;
 }
 
-/* Platform headings (cyan) */
+.departures-table th { 
+  color: rgba(255, 255, 255, 0.7);
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
 .departures-table td.platform-header,
 .departures-table td[colspan="4"] {
-  color: var(--teletext-cyan);
-  font-weight: bold;
-  border-bottom: 1px solid var(--teletext-cyan);
+  color: var(--text-primary);
+  font-weight: 600;
+  background: rgba(25, 25, 35, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 3px 6px;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: 0;
+  display: table-cell;
 }
 
-/* On-time / Delayed */
-.time.late, .status.late { color: var(--teletext-red); font-weight: bold; }
-.time.ontime, .status.ontime { color: var(--teletext-green); font-weight: bold; }
+.time.late, .status.late { 
+  color: var(--accent-red); 
+  font-weight: 500; 
+}
+.time.ontime, .status.ontime { 
+  color: var(--accent-cyan); 
+  font-weight: 500; 
+}
 
-/* Buses */
+/* Buses - Glass Style */
 .bus-table {
   width: 100%;
   border-collapse: collapse;
-  color: var(--teletext-white);
-}
-.bus-table th,
-.bus-table td {
-  padding: 1px 3px;
-  border-bottom: none;
-}
-.bus-table th { 
-  color: var(--teletext-white);
-  text-align: left;
-}
-.bus-table td:nth-child(2) {
-  color: var(--teletext-cyan);
+  color: var(--text-primary);
 }
 
-/* Weather */
+.bus-table th,
+.bus-table td {
+  padding: 2px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.bus-table th { 
+  color: rgba(255, 255, 255, 0.7);
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.bus-table td:nth-child(2) {
+  color: var(--accent-cyan);
+}
+
+/* Weather - Glass Style */
 .weather-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 4px;
-  margin-bottom: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 3px;
+  margin-bottom: 4px;
   justify-content: center;
 }
 
 .weather-seg {
   display: flex;
   align-items: center;
-  gap: 10px;
-  border: 1px solid var(--teletext-white);
-  padding: 6px;
-  background: #000;
-  color: var(--teletext-white);
+  gap: 4px;
+  padding: 4px 6px;
+  background: rgba(25, 25, 35, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  transition: all 0.3s;
 }
 
-.weather-seg .seg-icon {
-  font-size: 48px;
-  line-height: 1;
-  flex-shrink: 0;
+
+.seg-icon {
+  font-size: 22px;
 }
 
-.weather-seg .seg-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  line-height: 1.2;
-}
-
-/* Weather sub-headings (cyan) */
 .seg-title {
-  color: var(--teletext-cyan);
-  font-weight: bold;
-  margin-bottom: 2px;
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--text-primary);
+  margin-bottom: 1px;
 }
 
-.seg-line { color: var(--teletext-white); }
+.seg-line {
+  font-size: 10px;
+  color: var(--text-secondary);
+  line-height: 1.25;
+}
+
+.weather-more-details-btn {
+  background: rgba(40, 40, 60, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
 
 /* Weather footer summary */
 .weather-panel .muted {
   text-align: center;
   margin-top: 4px;
-  color: var(--teletext-white);
-}
-
-/* Highlight “High” and “Low” in footer */
-.weather-panel .muted {
-  font-size: 18px;
-}
-
-.weather-panel .muted::before,
-.weather-panel .muted::after {
-  content: '';
-}
-
-.weather-panel .muted {
-  color: var(--teletext-white);
+  color: var(--text-primary);
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 .weather-panel .muted span.high {
-  color: var(--teletext-orange);
+  color: #ff9933; /* Orange */
 }
 
 .weather-panel .muted span.low {
-  color: var(--teletext-lightblue);
+  color: #66ccff; /* Light blue */
 }
-
-/* Footer */
-.footer {
-  text-align: center;
-  padding: 4px;
-  border-top: 1px solid var(--teletext-white);
-  color: var(--teletext-grey);
-  font-size: 16px;
-}
-
-/* Title colours – all purple now */
-
-/* Responsive tweaks */
-@media (max-width: 1200px) {
-  .layout { 
-    grid-template-columns: 1fr 1fr; 
-    grid-template-rows: auto auto auto auto; 
-  }
-  .train-panel { grid-column: 1 / span 2; grid-row: 1; }
-  .tube-panel { grid-column: 1; grid-row: 2; }
-  .bus-panel { grid-column: 2; grid-row: 2; }
-  .weather-panel { grid-column: 1 / span 2; grid-row: 3; }
-}
-
-@media (max-width: 768px) {
-  .layout { 
-    grid-template-columns: 1fr; 
-    grid-template-rows: auto auto auto auto; 
-  }
-  .train-panel { grid-column: 1; grid-row: 1; }
-  .tube-panel { grid-column: 1; grid-row: 2; }
-  .bus-panel { grid-column: 1; grid-row: 3; }
-  .weather-panel { grid-column: 1; grid-row: 4; }
-  
-  /* Make train table more mobile-friendly */
-  .departures-table {
-    font-size: 16px;
-    min-width: 450px; /* Even more compact on mobile */
-  }
-  
-  .departures-table th,
-  .departures-table td {
-    padding: 1px 2px; /* Reduced padding for more compact layout */
-    font-size: 14px;
-  }
-  
-  /* Stack tube status elements vertically on very small screens */
-  .tube-row {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    align-items: flex-start;
-  }
-  
-  .tube-name {
-    font-weight: bold;
-  }
-  
-  .tube-status-text {
-    margin-left: 0;
-  }
-  
-  .tube-reason-container {
-    align-self: flex-end;
-    margin-top: 4px;
-  }
-}
-
-@media (max-width: 480px) {
-  body {
-    font-size: 16px;
-  }
-  
-  .header {
-    font-size: 18px;
-    flex-direction: column;
-    gap: 4px;
-  }
-  
-  .header-center {
-    position: static;
-    transform: none;
-    order: 2;
-  }
-  
-  .departures-table {
-    font-size: 14px;
-    min-width: 400px; /* Very compact for small screens */
-  }
-  
-  .departures-table th,
-  .departures-table td {
-    padding: 0px 1px; /* Minimal padding for maximum space efficiency */
-    font-size: 12px;
-  }
-}
-
-/* ===========================
-   WEATHER DETAILS MODAL
-   =========================== */
 
 .weather-details-button {
-  margin-top: 8px;
+  margin-top: 4px;
   text-align: center;
 }
 
-.weather-more-details-btn {
-  background: var(--teletext-blue);
-  color: var(--teletext-white);
-  border: 1px solid var(--teletext-white);
-  padding: 6px 12px;
-  font-family: 'VT323', monospace;
-  font-size: 18px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.weather-more-details-btn:hover {
-  background: var(--teletext-lightblue);
-}
-
+/* Weather Modal - Glass Style */
 .weather-modal {
   display: none;
   position: fixed;
@@ -684,8 +599,9 @@ body::after {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .weather-modal.active {
@@ -695,38 +611,44 @@ body::after {
 }
 
 .weather-modal-content {
-  background: var(--teletext-black);
-  border: 2px solid var(--teletext-white);
+  background: rgba(15, 15, 25, 0.95);
+  backdrop-filter: blur(60px) saturate(180%);
+  -webkit-backdrop-filter: blur(60px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 24px;
   width: 90%;
   max-width: 1200px;
   max-height: 80vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
 }
 
 .weather-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background: var(--teletext-blue);
-  border-bottom: 1px solid var(--teletext-white);
+  padding: 20px 24px;
+  background: rgba(20, 20, 30, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px 24px 0 0;
 }
 
 .weather-modal-header h2 {
   margin: 0;
-  color: var(--teletext-white);
-  font-size: 24px;
+  color: var(--text-primary);
+  font-size: 20px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .weather-modal-close {
   background: none;
   border: none;
-  color: var(--teletext-white);
-  font-size: 28px;
+  color: var(--text-secondary);
+  font-size: 24px;
   cursor: pointer;
   padding: 0;
   width: 32px;
@@ -734,32 +656,31 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s;
+  transition: all 0.2s;
+  border-radius: 8px;
 }
 
-.weather-modal-close:hover {
-  color: var(--teletext-red);
-}
 
 .weather-tabs {
   display: flex;
-  background: var(--teletext-black);
-  border-bottom: 1px solid var(--teletext-white);
+  background: rgba(20, 20, 30, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .weather-tab-btn {
   flex: 1;
-  background: var(--teletext-black);
-  color: var(--teletext-white);
+  background: transparent;
+  color: var(--text-secondary);
   border: none;
-  border-right: 1px solid var(--teletext-white);
-  padding: 12px 16px;
-  font-family: 'VT323', monospace;
-  font-size: 20px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .weather-tab-btn:last-child {
@@ -767,13 +688,11 @@ body::after {
 }
 
 .weather-tab-btn.active {
-  background: var(--teletext-green);
-  color: var(--teletext-black);
+  background: rgba(40, 40, 60, 0.7);
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--accent-blue);
 }
 
-.weather-tab-btn:hover:not(.active) {
-  background: var(--teletext-grey);
-}
 
 .weather-tab-content {
   flex: 1;
@@ -791,7 +710,7 @@ body::after {
 }
 
 .weather-forecast-table {
-  padding: 8px;
+  padding: 20px;
   height: 100%;
   overflow-y: auto;
 }
@@ -799,149 +718,123 @@ body::after {
 .forecast-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'VT323', monospace;
-  font-size: 22px;
+  font-family: inherit;
+  font-size: 13px;
   min-width: 500px;
   table-layout: fixed;
 }
 
-/* Optimize column widths for narrower, more compact layout */
 .forecast-table th:nth-child(1),
-.forecast-table td:nth-child(1) { width: 10%; } /* Time/Date column */
+.forecast-table td:nth-child(1) { width: 10%; }
 .forecast-table th:nth-child(2),
-.forecast-table td:nth-child(2) { width: 8%; } /* Weather emoji column */
+.forecast-table td:nth-child(2) { width: 8%; }
 .forecast-table th:nth-child(3),
-.forecast-table td:nth-child(3) { width: 10%; } /* Rain % column */
+.forecast-table td:nth-child(3) { width: 10%; }
 .forecast-table th:nth-child(4),
-.forecast-table td:nth-child(4) { width: 10%; } /* Temp column */
+.forecast-table td:nth-child(4) { width: 10%; }
 .forecast-table th:nth-child(5),
-.forecast-table td:nth-child(5) { width: 18%; } /* Wind column */
+.forecast-table td:nth-child(5) { width: 18%; }
 .forecast-table th:nth-child(6),
-.forecast-table td:nth-child(6) { width: 12%; } /* Pressure column */
+.forecast-table td:nth-child(6) { width: 12%; }
 .forecast-table th:nth-child(7),
-.forecast-table td:nth-child(7) { width: 12%; } /* Humidity column */
+.forecast-table td:nth-child(7) { width: 12%; }
 
 .forecast-table th {
-  color: var(--teletext-white);
-  padding: 2px 4px;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 8px 6px;
   text-align: left;
-  border-bottom: none;
-  font-weight: normal;
-  text-transform: none;
-  letter-spacing: normal;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   white-space: nowrap;
 }
 
 .forecast-table td {
-  padding: 1px 4px;
-  border: none;
-  border-bottom: none;
-  color: var(--teletext-white);
+  padding: 8px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
   white-space: nowrap;
 }
 
 .forecast-table tbody tr:nth-child(odd) {
-  background: #000000;
+  background: rgba(25, 25, 35, 0.3);
 }
 
 .forecast-table tbody tr:nth-child(even) {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(30, 30, 45, 0.4);
 }
 
-.forecast-table tbody tr:hover {
-  background: rgba(0, 255, 102, 0.08);
-}
 
 .forecast-table td:first-child {
-  font-weight: normal;
-  color: var(--teletext-cyan);
+  font-weight: 500;
+  color: var(--accent-cyan);
 }
 
 .forecast-table td:nth-child(2) {
-  font-size: 24px;
+  font-size: 20px;
   text-align: center;
   padding-left: 4px;
 }
 
-/* Make wind direction arrows slightly larger */
 .forecast-table td:nth-child(5) {
-  font-size: 24px;
+  font-size: 16px;
 }
 
-/* Responsive adjustments for modal */
+/* Footer - Glass Style */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(15, 15, 25, 0.7);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 3px 10px;
+  margin-top: 4px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .weather-modal-content,
-  .tube-modal-content {
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  
+  .tube-panel,
+  .bus-panel,
+  .weather-panel,
+  .train-panel {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  
+  .weather-modal-content {
     width: 95%;
     max-height: 90vh;
   }
   
-  .weather-modal-header h2,
-  .tube-modal-header h2 {
-    font-size: 20px;
-  }
-  
-  .weather-tab-btn {
-    font-size: 16px;
-    padding: 10px 12px;
-  }
-  
   .forecast-table {
-    font-size: 16px;
-  }
-  
-  .forecast-table th,
-  .forecast-table td {
-    padding: 1px 3px;
-  }
-  
-  .forecast-table td:nth-child(2) {
-    font-size: 20px;
-  }
-  
-  .tube-modal-body {
-    padding: 16px;
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 
 @media (max-width: 480px) {
-  .weather-modal-content,
-  .tube-modal-content {
-    width: 98%;
-    max-height: 95vh;
-  }
-  
-  .weather-modal-header,
-  .tube-modal-header {
-    padding: 8px 12px;
-  }
-  
-  .weather-modal-header h2,
-  .tube-modal-header h2 {
-    font-size: 18px;
-  }
-  
-  .weather-tab-btn {
+  body {
     font-size: 14px;
-    padding: 8px 10px;
+  }
+  
+  .panel {
+    padding: 16px;
   }
   
   .forecast-table {
-    font-size: 14px;
-  }
-  
-  .forecast-table th,
-  .forecast-table td {
-    padding: 1px 2px;
-  }
-  
-  .forecast-table td:nth-child(2) {
-    font-size: 18px;
-  }
-  
-  .tube-modal-body {
-    padding: 12px;
-    font-size: 13px;
+    font-size: 11px;
   }
 }
