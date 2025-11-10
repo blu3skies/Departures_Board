@@ -40,7 +40,7 @@
               <div class="tube-row tube-summary">
                 <div class="tube-summary-swatches">
                   {% for colour in tube_good_colours %}
-                    <span style="background: {{ colour }}"></span>
+                    <span class="tube-summary-swatch" data-colour="{{ colour }}"></span>
                   {% endfor %}
                 </div>
                 <div class="tube-name"></div>
@@ -160,40 +160,54 @@
         <div class="panel-title">Today's Weather</div>
 
         {% if weather %}
-          {% set segments = [] %}
-          {% if weather.get('segments') %}
-            {% for key, seg in weather.get('segments').items() %}
-              {% set _ = segments.append({
-                'title': key|capitalize,
-                'rain_probability': seg.get('rain_probability'),
-                'rain_intensity': seg.get('rain_intensity'),
-                'sky_icon': seg.get('sky_icon'),
-                'temp': seg.get('temp'),
-                'wind_speed': seg.get('wind_speed'),
-                'wind_gusts': seg.get('wind_gusts'),
-                'wind_dir': seg.get('wind_dir')
-              }) %}
-            {% endfor %}
-          {% endif %}
+          {% set segment_map = weather.get('segments') or {} %}
         {% endif %}
 
-        {% if segments %}
+        {% set left_periods = ['morning', 'midday'] %}
+        {% set right_periods = ['afternoon', 'evening'] %}
+
+        {% if segment_map %}
           <div class="weather-grid">
-            {% for seg in segments %}
-              <div class="weather-seg">
-                <div class="seg-icon">{{ seg.sky_icon }}</div>
-                <div class="seg-info">
-                  <div class="seg-title">{{ seg.title }}</div>
-                    <div class="seg-line">{{ seg.rain_probability }}% rain</div>
-                    <div class="seg-line">
-                      {% if seg.temp is not none %}
-                        {{ seg.temp }}° • 
-                      {% endif %}
-                      {{ seg.wind_speed }} km/h {{ seg.wind_dir }}
+            <div class="weather-column">
+              {% for key in left_periods %}
+                {% set seg = segment_map.get(key) %}
+                {% if seg %}
+                  <div class="weather-seg">
+                    <div class="seg-icon">{{ seg.get('sky_icon') }}</div>
+                    <div class="seg-info">
+                      <div class="seg-title">{{ key|capitalize }}</div>
+                      <div class="seg-line">{{ seg.get('rain_probability') }}% rain</div>
+                      <div class="seg-line">
+                        {% if seg.get('temp') is not none %}
+                          {{ seg.get('temp') }}° • 
+                        {% endif %}
+                        {{ seg.get('wind_speed') }} km/h {{ seg.get('wind_dir') }}
+                      </div>
                     </div>
-                </div>
-              </div>
-            {% endfor %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="weather-column">
+              {% for key in right_periods %}
+                {% set seg = segment_map.get(key) %}
+                {% if seg %}
+                  <div class="weather-seg">
+                    <div class="seg-icon">{{ seg.get('sky_icon') }}</div>
+                    <div class="seg-info">
+                      <div class="seg-title">{{ key|capitalize }}</div>
+                      <div class="seg-line">{{ seg.get('rain_probability') }}% rain</div>
+                      <div class="seg-line">
+                        {% if seg.get('temp') is not none %}
+                          {{ seg.get('temp') }}° • 
+                        {% endif %}
+                        {{ seg.get('wind_speed') }} km/h {{ seg.get('wind_dir') }}
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
           </div>
           <div class="muted">
             <span class="high">High:</span> {{ weather.high_temp }}° • 
@@ -206,6 +220,15 @@
         {% else %}
           <div class="muted">Weather unavailable</div>
         {% endif %}
+      </section>
+
+      <!-- CARBON INTENSITY -->
+      <section class="panel carbon-panel">
+        <div class="panel-title">Carbon Intensity</div>
+        <div class="carbon-chart-wrapper">
+          <canvas id="carbonChart" aria-label="Carbon intensity forecast" role="img"></canvas>
+        </div>
+        <div class="muted carbon-hint">Lower bars indicate cleaner electricity • Data: National Grid</div>
       </section>
     </div>
 
@@ -316,6 +339,8 @@
         </div>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='carbon.js') }}"></script>
   </div>
 </body>
 </html>

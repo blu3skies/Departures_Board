@@ -2,6 +2,16 @@
 (function() {
   'use strict';
   
+  function applyTubeSwatchColours() {
+    const swatches = document.querySelectorAll('.tube-summary-swatch[data-colour]');
+    swatches.forEach((swatch) => {
+      const colour = swatch.getAttribute('data-colour');
+      if (colour) {
+        swatch.style.backgroundColor = colour;
+      }
+    });
+  }
+
   function initLoadingState() {
     if (document.body) {
       document.body.classList.add('loading');
@@ -25,6 +35,11 @@
   }
   
   initLoadingState();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyTubeSwatchColours, { once: true });
+  } else {
+    applyTubeSwatchColours();
+  }
   
   // Prevent zoom on double-tap (mobile) - but allow clicks on buttons/interactive elements
   let lastTouchEnd = 0;
