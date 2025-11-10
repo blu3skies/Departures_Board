@@ -236,7 +236,6 @@
             borderWidth: 3,
             borderRadius: 10,
             borderSkipped: false,
-            barThickness: BAR_THICKNESS,
             maxBarThickness: BAR_THICKNESS
           }
         ]
@@ -246,6 +245,8 @@
         maintainAspectRatio: false,
         scales: {
           x: {
+        categoryPercentage: 1.0,
+        barPercentage: 0.94,
             grid: { display: false },
             ticks: {
               color: "rgba(255,255,255,0.75)",

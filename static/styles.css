@@ -76,7 +76,7 @@ body::after {
 
 .layout {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   grid-template-rows: auto 1fr auto;
   gap: 6px;
   padding: 0;
@@ -85,8 +85,15 @@ body::after {
   contain: layout;
 }
 
+@media (max-width: 1200px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
 /* Liquid Glass Panels */
 .panel {
+  box-sizing: border-box;
   background: rgba(20, 20, 30, 0.6);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
@@ -99,7 +106,9 @@ body::after {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   contain: layout style;
   min-height: 0;
+  min-width: 0;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 
@@ -149,6 +158,10 @@ body::after {
 
 /* Panel titles */
 .panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   color: var(--text-primary);
   font-weight: 600;
   background: rgba(25, 25, 35, 0.5);
@@ -163,6 +176,18 @@ body::after {
   text-transform: none;
   letter-spacing: 0;
   text-align: left;
+}
+
+.weather-title-summary {
+  margin-left: auto;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: right;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
 }
 
 /* Tube rows - Glass Style */
@@ -570,7 +595,10 @@ body::after {
   cursor: pointer;
   transition: all 0.3s;
   border-radius: 8px;
-  margin-top: 6px;
+}
+
+.panel-title .weather-more-details-btn {
+  margin-left: auto;
 }
 
 
@@ -591,31 +619,31 @@ body::after {
   color: #66ccff; /* Light blue */
 }
 
-.weather-details-button {
-  margin-top: 6px;
-  text-align: center;
-}
-
 .carbon-panel {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  overflow-x: hidden;
 }
 
 .carbon-chart-wrapper {
   position: relative;
   width: 100%;
   height: 140px;
+  box-sizing: border-box;
   background: rgba(25, 25, 35, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   padding: 10px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: hidden;
 }
 
 .carbon-chart-wrapper canvas {
+  display: block;
   width: 100% !important;
   height: 100% !important;
+  max-width: 100%;
 }
 
 .carbon-hint {
@@ -861,6 +889,7 @@ body::after {
   .carbon-chart-wrapper {
     height: 120px;
     padding: 8px;
+    overflow: hidden;
   }
 }
 
@@ -871,6 +900,22 @@ body::after {
   
   .panel {
     padding: 16px;
+  }
+
+  .panel-title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .weather-title-summary {
+    width: 100%;
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  .panel-title .weather-more-details-btn {
+    margin-left: 0;
+    margin-top: 8px;
   }
   
   .forecast-table {

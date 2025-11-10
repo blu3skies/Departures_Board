@@ -157,7 +157,10 @@
 
       <!-- WEATHER -->
       <section class="panel weather-panel">
-        <div class="panel-title">Today's Weather</div>
+        <div class="panel-title">
+          <span>Today's Weather</span>
+          <button type="button" class="weather-more-details-btn">More Details</button>
+        </div>
 
         {% if weather %}
           {% set segment_map = weather.get('segments') or {} %}
@@ -213,9 +216,6 @@
             <span class="high">High:</span> {{ weather.high_temp }}° • 
             <span class="low">Low:</span> {{ weather.low_temp }}° • 
             Sunrise: {{ weather.sunrise }} • Sunset: {{ weather.sunset }}
-          </div>
-          <div class="weather-details-button">
-            <button type="button" class="weather-more-details-btn">More Details</button>
           </div>
         {% else %}
           <div class="muted">Weather unavailable</div>
