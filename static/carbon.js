@@ -3,7 +3,7 @@
 
   const CHART_ID = "carbonChart";
   const API_BASE = "https://api.carbonintensity.org.uk/intensity";
-  const BAR_GAP = 1;
+  const BAR_GAP = 0.5;
   const MIN_BAR_WIDTH = 6;
 
   const colourStops = [
@@ -95,7 +95,8 @@
     const currentTime = new Date();
     const maxForecast = Math.max(...periods.map((p) => p.intensity.forecast));
 
-    const labels = [];
+  const labels = [];
+  const labelPattern = ["Midnight", "6AM", "Midday", "6PM"];
     const data = [];
     const bars = [];
     const borders = [];
@@ -112,13 +113,9 @@
       const mins = periodStart.getMinutes();
 
       let label = "";
-      if (
-        mins === 0 &&
-        (hour === 0 || hour === 4 || hour === 8 || hour === 12 || hour === 16 || hour === 20)
-      ) {
-        const ampm = hour >= 12 ? "PM" : "AM";
-        const hour12 = hour === 0 ? 12 : ((hour + 11) % 12) + 1;
-        label = `${hour12}${ampm}`;
+      const labelIndex = Math.floor(index / 6);
+      if (index % 6 === 0) {
+        label = labelPattern[labelIndex % labelPattern.length];
       }
       labels.push(label);
 
@@ -269,8 +266,11 @@
             ticks: {
               color: "rgba(255,255,255,0.75)",
               maxRotation: 0,
-              autoSkip: true,
-              maxTicksLimit: 12,
+              autoSkip: false,
+              callback(value, index, ticks) {
+                const label = (this?.chart?.data?.labels ?? [])[index];
+                return label || "";
+              },
               font: {
                 family: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                 size: 11

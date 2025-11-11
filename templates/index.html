@@ -156,15 +156,6 @@
       </section>
 
       <div class="bottom-panels">
-        <!-- CARBON INTENSITY -->
-        <section class="panel carbon-panel">
-          <div class="panel-title">Carbon Intensity</div>
-          <div class="carbon-chart-wrapper">
-            <canvas id="carbonChart" aria-label="Carbon intensity forecast" role="img"></canvas>
-          </div>
-          <div class="muted carbon-hint">Lower bars indicate cleaner electricity • Data: National Grid</div>
-        </section>
-
         <!-- WEATHER -->
         <section class="panel weather-panel">
           <div class="panel-title">
@@ -230,6 +221,16 @@
           {% else %}
             <div class="muted">Weather unavailable</div>
           {% endif %}
+
+        </section>
+
+        <!-- CARBON INTENSITY -->
+        <section class="panel carbon-panel">
+          <div class="panel-title">Today's and Tomorrow's Grid Carbon Intensity</div>
+          <div class="carbon-chart-wrapper">
+            <canvas id="carbonChart" aria-label="Carbon intensity forecast" role="img"></canvas>
+          </div>
+          <div class="muted carbon-hint">The larger and greener the bar the cleaner the energy • Data: National Grid</div>
         </section>
       </div>
     </div>
