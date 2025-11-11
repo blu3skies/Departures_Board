@@ -3,7 +3,8 @@
 
   const CHART_ID = "carbonChart";
   const API_BASE = "https://api.carbonintensity.org.uk/intensity";
-  const BAR_THICKNESS = 16;
+  const BAR_GAP = 1;
+  const MIN_BAR_WIDTH = 6;
 
   const colourStops = [
     { stop: 0.0, rgb: [244, 63, 94] },   // red
@@ -223,6 +224,21 @@
       }
     };
 
+    const fixedGapPlugin = {
+      id: "fixedBarGap",
+      afterLayout(chart) {
+        const dataset = chart.data.datasets?.[0];
+        if (!dataset || !chart.chartArea) return;
+        const count = dataset.data?.length ?? 0;
+        if (!count) return;
+        const width = chart.chartArea.width;
+        const categoryWidth = width / count;
+        const thickness = Math.max(MIN_BAR_WIDTH, categoryWidth - BAR_GAP);
+        dataset.barThickness = thickness;
+        dataset.maxBarThickness = thickness;
+      }
+    };
+
     new Chart(ctx, {
       type: "bar",
       data: {
@@ -236,7 +252,8 @@
             borderWidth: 3,
             borderRadius: 10,
             borderSkipped: false,
-            maxBarThickness: BAR_THICKNESS
+            barThickness: undefined,
+            maxBarThickness: undefined
           }
         ]
       },
@@ -245,8 +262,9 @@
         maintainAspectRatio: false,
         scales: {
           x: {
-        categoryPercentage: 1.0,
-        barPercentage: 0.94,
+            categoryPercentage: 1.0,
+            barPercentage: 1.0,
+            offset: false,
             grid: { display: false },
             ticks: {
               color: "rgba(255,255,255,0.75)",
@@ -290,7 +308,7 @@
           }
         }
       },
-      plugins: [verticalLinesPlugin]
+      plugins: [verticalLinesPlugin, fixedGapPlugin]
     });
   }
 

@@ -114,9 +114,19 @@ body::after {
 
 .tube-panel { grid-column: 1; grid-row: 1; }
 .bus-panel { grid-column: 1; grid-row: 2; }
-.weather-panel { grid-column: 1; grid-row: 3; }
-.carbon-panel { grid-column: 2; grid-row: 3; }
 .train-panel { grid-column: 2; grid-row: 1 / span 2; }
+
+.bottom-panels {
+  grid-column: 1 / span 2;
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.bottom-panels .panel {
+  height: 100%;
+}
 
 /* Header - Glass Version */
 .header {
@@ -870,11 +880,14 @@ body::after {
   
   .tube-panel,
   .bus-panel,
-  .weather-panel,
-  .carbon-panel,
   .train-panel {
     grid-column: 1;
     grid-row: auto;
+  }
+
+  .bottom-panels {
+    grid-column: 1;
+    grid-template-columns: 1fr;
   }
   
   .weather-modal-content {
