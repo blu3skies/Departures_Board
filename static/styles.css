@@ -871,8 +871,250 @@ body::after {
   flex-shrink: 0;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* Responsive - Mobile Phones Only (< 600px) */
+@media (max-width: 599px) {
+  body {
+    font-size: 13px;
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .screen {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    padding: 4px;
+  }
+
+  .layout {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    gap: 4px;
+  }
+  
+  .tube-panel,
+  .bus-panel,
+  .train-panel {
+    min-height: auto;
+  }
+
+  /* Reorder sections for mobile: Bus, Carbon, Tube, Weather, Train */
+  .bus-panel {
+    order: 1;
+  }
+  
+  .carbon-panel {
+    order: 2;
+  }
+  
+  .tube-panel {
+    order: 3;
+  }
+  
+  .weather-panel {
+    order: 4;
+  }
+  
+  .train-panel {
+    order: 5;
+  }
+  
+  .bottom-panels {
+    display: contents;
+  }
+
+  .train-panel {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .bottom-panels {
+    grid-column: 1;
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .panel {
+    padding: 8px 10px;
+    min-height: auto;
+  }
+
+  .panel-title {
+    font-size: 13px;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  /* Keep weather panel title as row layout */
+  .weather-panel .panel-title {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .weather-title-summary {
+    width: 100%;
+    text-align: left;
+    justify-content: flex-start;
+    font-size: 11px;
+  }
+
+  .panel-title .weather-more-details-btn {
+    margin-left: 0;
+    margin-top: 4px;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .weather-panel .panel-title .weather-more-details-btn {
+    margin-left: auto;
+    margin-top: 0;
+  }
+
+  /* Tube status - stack vertically on mobile */
+  .tube-row {
+    grid-template-columns: 100px 1fr auto;
+    gap: 6px;
+    padding: 3px 6px;
+    font-size: 12px;
+  }
+
+  .tube-name {
+    font-size: 12px;
+  }
+
+  .tube-status-text {
+    font-size: 12px;
+    padding-left: 8px;
+  }
+
+  .reason-toggle {
+    padding: 2px 6px;
+    font-size: 11px;
+  }
+
+  /* Train departures table - horizontal scroll */
+  .departures-table {
+    font-size: 12px;
+    min-width: 500px;
+  }
+
+  .departures-table th,
+  .departures-table td {
+    padding: 2px 4px;
+    font-size: 11px;
+  }
+
+  .departures-table th {
+    font-size: 10px;
+  }
+
+  /* Bus table */
+  .bus-table {
+    font-size: 12px;
+  }
+
+  .bus-table th,
+  .bus-table td {
+    padding: 2px 4px;
+    font-size: 11px;
+  }
+
+  .bus-table th {
+    font-size: 10px;
+  }
+
+  /* Weather grid - 2x2 grid on mobile */
+  .weather-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3px;
+  }
+
+  .weather-column {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .weather-seg {
+    padding: 4px 6px;
+  }
+
+  .seg-icon {
+    font-size: 20px;
+  }
+
+  .seg-title {
+    font-size: 11px;
+  }
+
+  .seg-line {
+    font-size: 10px;
+  }
+
+  /* Carbon chart */
+  .carbon-chart-wrapper {
+    height: 100px;
+    padding: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Header */
+  .header {
+    padding: 4px 8px;
+    font-size: 12px;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .title {
+    font-size: 12px;
+  }
+
+  .header-center {
+    font-size: 11px;
+  }
+
+  .panel-updated {
+    font-size: 10px;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 4px 8px;
+    font-size: 11px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  /* Modals */
+  .weather-modal-content,
+  .tube-modal-content {
+    width: 95%;
+    max-height: 85vh;
+  }
+
+  .forecast-table {
+    font-size: 10px;
+    min-width: 400px;
+  }
+
+  .forecast-table th,
+  .forecast-table td {
+    padding: 4px 3px;
+    font-size: 10px;
+  }
+}
+
+/* Responsive - Tablets and up (600px+) - Keep existing layout */
+@media (min-width: 600px) and (max-width: 768px) {
   .layout {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -903,40 +1145,5 @@ body::after {
     height: 120px;
     padding: 8px;
     overflow: hidden;
-  }
-}
-
-@media (max-width: 480px) {
-  body {
-    font-size: 14px;
-  }
-  
-  .panel {
-    padding: 16px;
-  }
-
-  .panel-title {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .weather-title-summary {
-    width: 100%;
-    text-align: left;
-    justify-content: flex-start;
-  }
-
-  .panel-title .weather-more-details-btn {
-    margin-left: 0;
-    margin-top: 8px;
-  }
-  
-  .forecast-table {
-    font-size: 11px;
-  }
-
-  .carbon-chart-wrapper {
-    height: 100px;
-    padding: 8px;
   }
 }

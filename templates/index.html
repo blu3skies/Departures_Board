@@ -167,51 +167,28 @@
             {% set segment_map = weather.get('segments') or {} %}
           {% endif %}
 
-          {% set left_periods = ['morning', 'midday'] %}
-          {% set right_periods = ['afternoon', 'evening'] %}
+          {% set periods_order = ['morning', 'midday', 'afternoon', 'evening'] %}
 
           {% if segment_map %}
             <div class="weather-grid">
-              <div class="weather-column">
-                {% for key in left_periods %}
-                  {% set seg = segment_map.get(key) %}
-                  {% if seg %}
-                    <div class="weather-seg">
-                      <div class="seg-icon">{{ seg.get('sky_icon') }}</div>
-                      <div class="seg-info">
-                        <div class="seg-title">{{ key|capitalize }}</div>
-                        <div class="seg-line">{{ seg.get('rain_probability') }}% rain</div>
-                        <div class="seg-line">
-                          {% if seg.get('temp') is not none %}
-                            {{ seg.get('temp') }}° • 
-                          {% endif %}
-                          {{ seg.get('wind_speed') }} km/h {{ seg.get('wind_dir') }}
-                        </div>
+              {% for key in periods_order %}
+                {% set seg = segment_map.get(key) %}
+                {% if seg %}
+                  <div class="weather-seg">
+                    <div class="seg-icon">{{ seg.get('sky_icon') }}</div>
+                    <div class="seg-info">
+                      <div class="seg-title">{{ key|capitalize }}</div>
+                      <div class="seg-line">{{ seg.get('rain_probability') }}% rain</div>
+                      <div class="seg-line">
+                        {% if seg.get('temp') is not none %}
+                          {{ seg.get('temp') }}° • 
+                        {% endif %}
+                        {{ seg.get('wind_speed') }} km/h {{ seg.get('wind_dir') }}
                       </div>
                     </div>
-                  {% endif %}
-                {% endfor %}
-              </div>
-              <div class="weather-column">
-                {% for key in right_periods %}
-                  {% set seg = segment_map.get(key) %}
-                  {% if seg %}
-                    <div class="weather-seg">
-                      <div class="seg-icon">{{ seg.get('sky_icon') }}</div>
-                      <div class="seg-info">
-                        <div class="seg-title">{{ key|capitalize }}</div>
-                        <div class="seg-line">{{ seg.get('rain_probability') }}% rain</div>
-                        <div class="seg-line">
-                          {% if seg.get('temp') is not none %}
-                            {{ seg.get('temp') }}° • 
-                          {% endif %}
-                          {{ seg.get('wind_speed') }} km/h {{ seg.get('wind_dir') }}
-                        </div>
-                      </div>
-                    </div>
-                  {% endif %}
-                {% endfor %}
-              </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
             </div>
             <div class="muted">
               <span class="high">High:</span> {{ weather.high_temp }}° • 
